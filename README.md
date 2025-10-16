@@ -1,1 +1,3 @@
 # BitNova
+
+Kathi war hier.
