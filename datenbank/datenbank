@@ -3,15 +3,15 @@ USE rezeptedatenbank;
 
 CREATE TABLE recipes (
     recipe_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
+    recipe_name VARCHAR(255) NOT NULL,
+    recipe_description TEXT,
     portions INT,
     author_id INT NOT NULL
 );
 
 CREATE TABLE ingredients (
     ingredients_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL UNIQUE
+    ingredients_name VARCHAR(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE recipes_ingredients (
@@ -26,7 +26,7 @@ CREATE TABLE recipes_ingredients (
 
 CREATE TABLE category (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL UNIQUE
+    category_name VARCHAR(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE recipe_categories(
@@ -35,4 +35,18 @@ CREATE TABLE recipe_categories(
     PRIMARY KEY (recipe_id, category_id),
     FOREIGN KEY (recipe_id) REFERENCES recipes(recipe_id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE
+);
+
+CREATE TABLE steps (
+    step_id INT AUTO_INCREMENT PRIMARY KEY,
+    recipe_id INT NOT NULL,
+    stepnumber INT NOT NULL,
+    step_description TEXT NOT NULL,
+    FOREIGN KEY (recipe_id) REFERENCES recipes(recipe_id) ON DELETE CASCADE,
+    UNIQUE (recipe_id, stepnumber)
+);
+
+CREATE TABLE author(
+    author_id INT AUTO_INCREMENT PRIMARY KEY,
+    author_name VARCHAR(255) NOT NULL UNIQUE
 );
