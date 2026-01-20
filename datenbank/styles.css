@@ -149,7 +149,7 @@ footer {
     justify-content: space-between;
     padding: 20px 25px;
     border-top: 3px solid var(--dark);
-    background: var(--beige);
+    background: E8903B;
 }
 
 .footer-left a {
