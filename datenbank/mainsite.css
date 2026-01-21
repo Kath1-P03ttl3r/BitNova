@@ -1,5 +1,5 @@
 :root {
-    --beige: #f3eadb;
+    --beige: #ece2d2;
     --orange: #e67a2e;
     --dark-orange: #c85a1e;
     --green: #4f8f6a;
@@ -28,7 +28,7 @@ header {
 }
 
 .logo img {
-    height: 80px;
+    height: 90px;
 }
 
 .search input {
@@ -160,7 +160,7 @@ footer {
     align-items: center;
     padding: 8px 25px;
     border-top: 3px solid var(--dark);
-    background: #d6c7b2;
+    background: #dbc3a3;
     z-index: 50;
 }
 
