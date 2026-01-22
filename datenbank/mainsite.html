@@ -1,255 +1,235 @@
 <!doctype html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="mainsite.css" />
-    <title>CookingBit</title>
-  </head>
-  <body>
-    <header>
-      <div class="logo">
-        <img src="CookingBit_Logo.png" />
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="mainsite.css" />
+  <title>CookingBit</title>
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+      <img src="CookingBit_Logo.png" />
+    </div>
+
+    <div class="search">🔍 <input type="text" placeholder="Suche" /></div>
+
+    <div class="menu">☰</div>
+  </header>
+
+  <main>
+    <aside class="filters">
+      <div class="dropdown">
+        <button class="dropdown-btn">Mahlzeitentyp ▾</button>
+        <ul class="dropdown-list">
+          <li>Frühstück</li>
+          <li>Mittagessen</li>
+          <li>Abendessen</li>
+          <li>Snack</li>
+        </ul>
       </div>
 
-      <div class="search">🔍 <input type="text" placeholder="Suche" /></div>
-
-      <div class="menu">☰</div>
-    </header>
-
-    <main>
-      <aside class="filters">
-        <div class="dropdown">
-          <button class="dropdown-btn">Tageszeit ▾</button>
-          <ul class="dropdown-list">
-            <li>Morgen</li>
-            <li>Mittag</li>
-            <li>Abend</li>
-            <li>Snack</li>
-          </ul>
-        </div>
-
-        <div class="dropdown">
-          <button class="dropdown-btn">Einschränkungen ▾</button>
-          <ul class="dropdown-list">
-            <li>Keine</li>
-            <li>Vegetarisch</li>
-            <li>Vegan</li>
-            <li>Glutenfrei</li>
-            <li>Laktosefrei</li>
-          </ul>
-        </div>
-
-        <div class="dropdown">
-          <button class="dropdown-btn">Dauer ▾</button>
-          <ul class="dropdown-list">
-            <li>Unter 15 Min</li>
-            <li>15–30 Min</li>
-            <li>30–60 Min</li>
-            <li>Über 60 Min</li>
-          </ul>
-        </div>
-      </aside>
-
-      <section class="cards">
-        <a href="detail.html" class="card">
-          <div class="image">
-            <img
-              src="https://static.gesundheitswissen.de/wp-content/uploads/2022/08/healthy-breakfast-table-scene-with-fruit-yogurts-oatmeal-smoothie-nutritious-toasts-and-egg-skillet-top-view-over-a-wood-background.jpg"
-              alt="Frühstück"
-            />
-          </div>
-          <div class="description">
-            Leckeres Frühstück mit frischen Zutaten.
-            <div class="more">Weiter…</div>
-          </div>
-        </a>
-
-        <a href="detail.html" class="card">
-          <div class="image">
-            <img
-              src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80"
-              alt="Mittagessen"
-            />
-          </div>
-          <div class="description">
-            Gesundes Mittagessen voller Geschmack.
-            <div class="more">Weiter…</div>
-          </div>
-        </a>
-
-        <a href="detail.html" class="card">
-          <div class="image">
-            <img
-              src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=600&q=80"
-              alt="Abendessen"
-            />
-          </div>
-          <div class="description">
-            Schnelles Abendessen in 30 Minuten.
-            <div class="more">Weiter…</div>
-          </div>
-        </a>
-
-        <a href="detail.html" class="card">
-          <div class="image">
-            <img
-              src="https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=600&q=80"
-              alt="Pasta"
-            />
-          </div>
-          <div class="description">
-            Brokolli-Fleisch Teller mit Reis als Nebenbeilage.
-            <div class="more">Weiter…</div>
-          </div>
-        </a>
-
-        <a href="detail.html" class="card">
-          <div class="image">
-            <img
-              src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=600&q=80"
-              alt="Salat"
-            />
-          </div>
-          <div class="description">
-            Frische Pasta mit Fleisch und Gemüse Soße.
-            <div class="more">Weiter…</div>
-          </div>
-        </a>
-
-        <a href="detail.html" class="card">
-          <div class="image">
-            <img
-              src="https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?auto=format&fit=crop&w=600&q=80"
-              alt="Suppe"
-            />
-          </div>
-          <div class="description">
-            Cremige Kürbissuppe für kalte Tage.
-            <div class="more">Weiter…</div>
-          </div>
-        </a>
-
-        <a href="detail.html" class="card">
-          <div class="image">
-            <img
-              src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80"
-              alt="Pizza"
-            />
-          </div>
-          <div class="description">
-            Hausgemachte Pizza Margharita.
-            <div class="more">Weiter…</div>
-          </div>
-        </a>
-
-        <a href="detail.html" class="card">
-          <div class="image">
-            <img
-              src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=600&q=80"
-              alt="Bowl"
-            />
-          </div>
-          <div class="description">
-            Proteinreicher Quinoa-Bowl.
-            <div class="more">Weiter…</div>
-          </div>
-        </a>
-
-        <a href="detail.html" class="card">
-          <div class="image">
-            <img
-              src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80"
-              alt="Smoothie"
-            />
-          </div>
-          <div class="description">
-            Frühstück zum Start in den Tag.
-            <div class="more">Weiter…</div>
-          </div>
-        </a>
-
-        <a href="detail.html" class="card">
-          <div class="image">
-            <img
-              src="https://images.unsplash.com/photo-1546069901-eacef0df6022?auto=format&fit=crop&w=600&q=80"
-              alt="Nudeln"
-            />
-          </div>
-          <div class="description">
-            Kartoffeln mit Gemüsepfanne.
-            <div class="more">Weiter…</div>
-          </div>
-        </a>
-
-        <a href="detail.html" class="card">
-          <div class="image">
-            <img
-              src="https://img.chefkoch-cdn.de/rezepte/255661100829244/bilder/1573691/crop-640x427/brownies.jpg"
-              alt="Brownie"
-            />
-          </div>
-          <div class="description">
-            Schokoladiger Brownie ohne Zucker.
-            <div class="more">Weiter…</div>
-          </div>
-        </a>
-
-        <a href="detail.html" class="card">
-          <div class="image">
-            <img
-              src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80"
-              alt="Ofenkartoffeln"
-            />
-          </div>
-          <div class="description">
-            Schmackhafter Steak mit Nebengerichten.
-            <div class="more">Weiter…</div>
-          </div>
-        </a>
-      </section>
-    </main>
-
-    <footer>
-      <div class="footer-left">
-        <div class="footer-col">
-          <a href="#">Impressum</a>
-          <a href="#">Datenschutz</a>
-        </div>
-        <div class="footer-col">
-          <a href="#">Über uns</a>
-          <a href="#">Unsere Geschichte</a>
-        </div>
+      <div class="dropdown">
+        <button class="dropdown-btn">Einschränkungen ▾</button>
+        <ul class="dropdown-list">
+          <li>Keine</li>
+          <li>Vegetarisch</li>
+          <li>Vegan</li>
+          <li>Glutenfrei</li>
+          <li>Laktosefrei</li>
+        </ul>
       </div>
 
-      <div class="footer-right">Bewerte uns: ★★★★☆</div>
-    </footer>
+      <div class="dropdown">
+        <button class="dropdown-btn">Dauer ▾</button>
+        <ul class="dropdown-list">
+          <li>Unter 15 Min</li>
+          <li>15–30 Min</li>
+          <li>30–60 Min</li>
+          <li>Über 60 Min</li>
+        </ul>
+      </div>
+    </aside>
 
-    <script>
-      const dropdowns = document.querySelectorAll(".dropdown");
+    <section class="cards">
+      <a href="detail.html" class="card">
+        <div class="image">
+          <img
+            src="https://static.gesundheitswissen.de/wp-content/uploads/2022/08/healthy-breakfast-table-scene-with-fruit-yogurts-oatmeal-smoothie-nutritious-toasts-and-egg-skillet-top-view-over-a-wood-background.jpg"
+            alt="Frühstück" />
+        </div>
+        <div class="description">
+          Leckeres Frühstück mit frischen Zutaten
+          <div class="more">Weiter…</div>
+        </div>
+      </a>
 
-      dropdowns.forEach((dropdown) => {
-        const btn = dropdown.querySelector(".dropdown-btn");
-        const items = dropdown.querySelectorAll("li");
+      <a href="detail.html" class="card">
+        <div class="image">
+          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80"
+            alt="Mittagessen" />
+        </div>
+        <div class="description">
+          Gesundes Mittagessen voller Geschmack
+          <div class="more">Weiter…</div>
+        </div>
+      </a>
 
-        btn.addEventListener("click", () => {
-          dropdowns.forEach((d) => d.classList.remove("active"));
-          dropdown.classList.toggle("active");
-        });
+      <a href="detail.html" class="card">
+        <div class="image">
+          <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=600&q=80"
+            alt="Abendessen" />
+        </div>
+        <div class="description">
+          Schnelles Abendessen in 30 Minuten
+          <div class="more">Weiter…</div>
+        </div>
+      </a>
 
-        items.forEach((item) => {
-          item.addEventListener("click", () => {
-            btn.textContent = item.textContent + " ▾";
-            dropdown.classList.remove("active");
-          });
-        });
+      <a href="detail.html" class="card">
+        <div class="image">
+          <img src="https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=600&q=80"
+            alt="Pasta" />
+        </div>
+        <div class="description">
+          Brokolli-Fleisch Teller mit Reis als Nebenbeilage
+          <div class="more">Weiter…</div>
+        </div>
+      </a>
+
+      <a href="detail.html" class="card">
+        <div class="image">
+          <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=600&q=80"
+            alt="Salat" />
+        </div>
+        <div class="description">
+          Frische Pasta mit Fleisch und Gemüse Soße
+          <div class="more">Weiter…</div>
+        </div>
+      </a>
+
+      <a href="detail.html" class="card">
+        <div class="image">
+          <img src="https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?auto=format&fit=crop&w=600&q=80"
+            alt="Suppe" />
+        </div>
+        <div class="description">
+          Cremige Kürbissuppe für kalte Tage
+          <div class="more">Weiter…</div>
+        </div>
+      </a>
+
+      <a href="detail.html" class="card">
+        <div class="image">
+          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80"
+            alt="Pizza" />
+        </div>
+        <div class="description">
+          Hausgemachte Pizza Margharita
+          <div class="more">Weiter…</div>
+        </div>
+      </a>
+
+      <a href="detail.html" class="card">
+        <div class="image">
+          <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=600&q=80"
+            alt="Bowl" />
+        </div>
+        <div class="description">
+          Proteinreiche Quinoa-Bowl
+          <div class="more">Weiter…</div>
+        </div>
+      </a>
+
+      <a href="detail.html" class="card">
+        <div class="image">
+          <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80"
+            alt="Smoothie" />
+        </div>
+        <div class="description">
+          StärkendesFrühstück zum Start in den Tag
+          <div class="more">Weiter…</div>
+        </div>
+      </a>
+
+      <a href="detail.html" class="card">
+        <div class="image">
+          <img src="https://images.unsplash.com/photo-1546069901-eacef0df6022?auto=format&fit=crop&w=600&q=80"
+            alt="Nudeln" />
+        </div>
+        <div class="description">
+          Kartoffeln auf Salat
+          <div class="more">Weiter…</div>
+        </div>
+      </a>
+
+      <a href="detail.html" class="card">
+        <div class="image">
+          <img src="https://img.chefkoch-cdn.de/rezepte/255661100829244/bilder/1573691/crop-640x427/brownies.jpg"
+            alt="Brownie" />
+        </div>
+        <div class="description">
+          Schokoladiger Brownie ohne Zucker
+          <div class="more">Weiter…</div>
+        </div>
+      </a>
+
+      <a href="detail.html" class="card">
+        <div class="image">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80"
+            alt="Ofenkartoffeln" />
+        </div>
+        <div class="description">
+          Schmackhaftes Steak mit verschiedenen Beilagen
+          <div class="more">Weiter…</div>
+        </div>
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-left">
+      <div class="footer-col">
+        <a href="#">Impressum</a>
+        <a href="#">Datenschutz</a>
+      </div>
+      <div class="footer-col">
+        <a href="#">Über uns</a>
+        <a href="#">Unsere Geschichte</a>
+      </div>
+    </div>
+
+    <div class="footer-right">Bewerte uns: ★★★★☆</div>
+  </footer>
+
+  <script>
+    const dropdowns = document.querySelectorAll(".dropdown");
+
+    dropdowns.forEach((dropdown) => {
+      const btn = dropdown.querySelector(".dropdown-btn");
+      const items = dropdown.querySelectorAll("li");
+
+      btn.addEventListener("click", () => {
+        dropdowns.forEach((d) => d.classList.remove("active"));
+        dropdown.classList.toggle("active");
       });
 
-      document.addEventListener("click", (e) => {
-        if (!e.target.closest(".dropdown")) {
-          dropdowns.forEach((d) => d.classList.remove("active"));
-        }
+      items.forEach((item) => {
+        item.addEventListener("click", () => {
+          btn.textContent = item.textContent + " ▾";
+          dropdown.classList.remove("active");
+        });
       });
-    </script>
-  </body>
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".dropdown")) {
+        dropdowns.forEach((d) => d.classList.remove("active"));
+      }
+    });
+  </script>
+</body>
+
 </html>
