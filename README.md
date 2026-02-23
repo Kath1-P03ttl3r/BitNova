@@ -1,7 +1,2 @@
-# BitNova
-
-Kathi war hier.
-
-Salima war hier.
-
-Nico war hier.
+alternative mit postgre und .js
+node.js benötigt um zu runnen
