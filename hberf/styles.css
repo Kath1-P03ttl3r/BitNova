@@ -20,6 +20,12 @@ button,
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+button:hover,
+.button:hover {
+    transform: scale(1.1);
 }
 
 .button {
