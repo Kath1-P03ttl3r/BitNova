@@ -1,0 +1,390 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Inter, system-ui, sans-serif;
+    background: #f4e7d8;
+    color: #2f2f2f;
+}
+
+button,
+.button {
+    border: none;
+    border-radius: 999px;
+    padding: 12px 22px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button {
+    background: #fff;
+    color: #2f2f2f;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.button.orange {
+    background: #d97528;
+    color: white;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 34px;
+    background: #ebe1d1;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+}
+
+.brand img {
+    height: 84px;
+    width: auto;
+    display: block;
+}
+
+.page-shell {
+    min-height: 100vh;
+}
+
+.landing-shell .topbar {
+    border-bottom: none;
+}
+
+.landing-panel {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
+    padding: 60px 80px;
+    align-items: center;
+}
+
+.hero-content h1 {
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    margin: 0 0 18px;
+}
+
+.hero-content p {
+    max-width: 540px;
+    line-height: 1.8;
+    margin-bottom: 32px;
+}
+
+.button-row {
+    display: flex;
+    gap: 18px;
+}
+
+.hero-visual img {
+    width: 100%;
+    border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+}
+
+.auth-shell {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 40px;
+}
+
+.auth-card,
+.form-card,
+.detail-card {
+    width: min(760px, 100%);
+    background: rgba(255, 255, 255, 0.94);
+    border-radius: 28px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.1);
+    padding: 32px;
+}
+
+.auth-card h1,
+.form-card h1 {
+    margin-top: 0;
+    font-size: 2rem;
+}
+
+.auth-card form,
+.form-card form {
+    display: grid;
+    gap: 18px;
+}
+
+.auth-card label,
+.form-card label {
+    font-weight: 700;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="password"],
+input[type="search"],
+textarea,
+select {
+    width: 100%;
+    border: 1px solid #cbc0b4;
+    border-radius: 16px;
+    padding: 14px 16px;
+    font-size: 1rem;
+    background: #fff;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.alert {
+    border-left: 4px solid #d97528;
+    background: #fff3e8;
+    padding: 14px 16px;
+    border-radius: 16px;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+    padding: 28px 34px 50px;
+}
+
+.sidebar {
+    position: sticky;
+    top: 22px;
+    align-self: start;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 28px;
+    padding: 24px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+}
+
+.filter-form {
+    display: grid;
+    gap: 18px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-group input {
+    margin-right: 10px;
+}
+
+.recipe-board {
+    padding-top: 8px;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.recipe-card {
+    background: #fff;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-image {
+    min-height: 180px;
+    background-size: cover;
+    background-position: center;
+}
+
+.card-body {
+    padding: 22px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-body h2 {
+    margin: 0 0 12px;
+    font-size: 1.25rem;
+}
+
+.card-body p {
+    margin: 0 0 16px;
+    line-height: 1.7;
+    color: #5c5650;
+}
+
+.card-meta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+    color: #8c7a6c;
+    font-size: 0.95rem;
+}
+
+.tag {
+    background: #d6b48d;
+    color: #3d2c1d;
+    border-radius: 999px;
+    padding: 4px 12px;
+}
+
+.link-button {
+    margin-top: auto;
+    align-self: flex-start;
+    color: #bf7000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.content-form {
+    padding: 34px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.recipe-detail {
+    display: grid;
+    place-items: center;
+    min-height: calc(100vh - 120px);
+    padding: 34px;
+}
+
+.detail-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    width: min(760px, 100%);
+}
+
+.detail-image {
+    min-height: 420px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 28px;
+}
+
+.detail-body {
+    display: grid;
+    gap: 18px;
+}
+
+.detail-body h1 {
+    margin: 0;
+}
+
+.detail-description {
+    color: #4f4036;
+    line-height: 1.8;
+}
+
+.meta-chip {
+    color: #a56e29;
+    font-weight: 700;
+}
+
+.small-text {
+    color: #7a6b61;
+    font-size: 0.95rem;
+}
+
+.detail-section h2 {
+    margin-bottom: 10px;
+}
+
+.detail-section ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.detail-section pre {
+    white-space: pre-wrap;
+    margin: 0;
+    padding: 16px;
+    border-radius: 18px;
+    background: #f7f0e6;
+}
+
+.empty-state {
+    padding: 48px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 24px;
+}
+
+@media (max-width: 980px) {
+    .landing-panel {
+        grid-template-columns: 1fr;
+        padding: 40px 24px;
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .detail-card {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.landing-container {
+    display: grid;
+    place-items: center;
+    min-height: calc(100vh - 120px);
+    padding: 34px;
+}
+
+.landing-card {
+    text-align: center;
+    width: min(500px, 100%);
+    display: grid;
+    gap: 20px;
+}
+
+.landing-card h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    color: #2f2f2f;
+}
+
+.landing-card p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #4f4036;
+    line-height: 1.6;
+}
+
+.landing-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
