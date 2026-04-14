@@ -93,10 +93,18 @@ if ($sampleCheck == 0) {
     }
 }
 
-$adminExists = $pdo->query('SELECT COUNT(*) FROM users WHERE username = "admin"')->fetchColumn();
-if (!$adminExists) {
+$adminHash = password_hash('CookingBit', PASSWORD_DEFAULT);
+$adminUser = $pdo->query('SELECT id, username FROM users WHERE username = "BitNova"')->fetch(PDO::FETCH_ASSOC);
+$legacyAdminUser = $pdo->query('SELECT id FROM users WHERE username = "admin"')->fetch(PDO::FETCH_ASSOC);
+if ($adminUser) {
+    $stmt = $pdo->prepare('UPDATE users SET email = ?, password_hash = ? WHERE id = ?');
+    $stmt->execute(['admin@example.com', $adminHash, $adminUser['id']]);
+} elseif ($legacyAdminUser) {
+    $stmt = $pdo->prepare('UPDATE users SET username = ?, email = ?, password_hash = ? WHERE id = ?');
+    $stmt->execute(['BitNova', 'admin@example.com', $adminHash, $legacyAdminUser['id']]);
+} else {
     $stmt = $pdo->prepare('INSERT OR IGNORE INTO users(username,email,password_hash,created_at) VALUES (?, ?, ?, ?)');
-    $stmt->execute(['admin', 'admin@example.com', password_hash('admin123', PASSWORD_DEFAULT), date('Y-m-d H:i:s')]);
+    $stmt->execute(['BitNova', 'admin@example.com', $adminHash, date('Y-m-d H:i:s')]);
 }
 
 function requireLogin()
@@ -115,7 +123,7 @@ function currentUser()
 function isAdmin()
 {
     $user = currentUser();
-    return $user && $user['username'] === 'admin';
+    return $user && $user['username'] === 'BitNova';
 }
 
 function requireAdmin()
