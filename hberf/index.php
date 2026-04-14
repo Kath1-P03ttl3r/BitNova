@@ -14,7 +14,7 @@ require_once 'db.php';
 <body>
     <div class="topbar">
         <div class="brand">
-            <img src="logo.png" alt="CookingBit">
+            <a href="dashboard.php"><img src="logo.png" alt="CookingBit"></a>
         </div>
         <div></div>
     </div>

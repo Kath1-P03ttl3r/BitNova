@@ -25,7 +25,7 @@ if (!$recipe) {
 <body>
     <div class="page-shell">
         <header class="topbar">
-            <div class="brand"><img src="logo.png" alt="CookingBit logo"></div>
+            <div class="brand"><a href="dashboard.php"><img src="logo.png" alt="CookingBit logo"></a></div>
             <div class="top-actions">
                 <a class="button" href="dashboard.php">Back</a>
                 <?php if ($user): ?>

@@ -46,7 +46,7 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
     <div class="page-shell">
         <header class="topbar">
-            <div class="brand"><img src="logo.png" alt="CookingBit logo"></div>
+            <div class="brand"><a href="dashboard.php"><img src="logo.png" alt="CookingBit logo"></a></div>
             <div class="top-actions">
                 <?php if ($user): ?>
                     <span>Welcome, <?php echo htmlspecialchars($user['username']); ?></span>

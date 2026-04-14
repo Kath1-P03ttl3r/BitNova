@@ -70,7 +70,7 @@ $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN use
 <body>
     <div class="page-shell">
         <header class="topbar">
-            <div class="brand"><img src="logo.png" alt="CookingBit logo"></div>
+            <div class="brand"><a href="dashboard.php"><img src="logo.png" alt="CookingBit logo"></a></div>
             <div class="top-actions">
                 <a class="button" href="dashboard.php">Dashboard</a>
                 <?php if ($user): ?>
