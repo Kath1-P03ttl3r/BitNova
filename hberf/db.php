@@ -93,6 +93,12 @@ if ($sampleCheck == 0) {
     }
 }
 
+$adminExists = $pdo->query('SELECT COUNT(*) FROM users WHERE username = "admin"')->fetchColumn();
+if (!$adminExists) {
+    $stmt = $pdo->prepare('INSERT OR IGNORE INTO users(username,email,password_hash,created_at) VALUES (?, ?, ?, ?)');
+    $stmt->execute(['admin', 'admin@example.com', password_hash('admin123', PASSWORD_DEFAULT), date('Y-m-d H:i:s')]);
+}
+
 function requireLogin()
 {
     if (empty($_SESSION['user'])) {
@@ -104,4 +110,18 @@ function requireLogin()
 function currentUser()
 {
     return $_SESSION['user'] ?? null;
+}
+
+function isAdmin()
+{
+    $user = currentUser();
+    return $user && $user['username'] === 'admin';
+}
+
+function requireAdmin()
+{
+    if (!isAdmin()) {
+        header('Location: dashboard.php');
+        exit;
+    }
 }

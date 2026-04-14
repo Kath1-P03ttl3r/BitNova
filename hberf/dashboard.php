@@ -51,6 +51,9 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php if ($user): ?>
                     <span>Welcome, <?php echo htmlspecialchars($user['username']); ?></span>
                     <a class="button" href="add_recipe.php">Add Recipe</a>
+                    <?php if (isAdmin()): ?>
+                        <a class="button" href="db_table.php">DB Table</a>
+                    <?php endif; ?>
                     <a class="button" href="logout.php">Logout</a>
                 <?php else: ?>
                     <a class="button" href="login.php">Login</a>
