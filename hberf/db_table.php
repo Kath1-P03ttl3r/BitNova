@@ -83,7 +83,7 @@ $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN use
             </div>
         </header>
 
-        <main class="content-grid">
+        <main class="content-grid db-table-layout">
             <section class="table-panel">
                 <div class="table-header-row" style="display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px; flex-wrap: wrap;">
                     <h1>Recipe Database</h1>
@@ -112,7 +112,7 @@ $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN use
                                 <th>Meal Type</th>
                                 <th>Duration</th>
                                 <th>Dietary Restriction</th>
-                                <th>Image URL</th>
+                                <th>Image</th>
                                 <th>Created At</th>
                                 <th>Action</th>
                             </tr>
@@ -129,7 +129,9 @@ $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN use
                                     <td><?php echo htmlspecialchars($recipe['meal_type']); ?></td>
                                     <td><?php echo htmlspecialchars($recipe['duration']); ?></td>
                                     <td><?php echo htmlspecialchars($recipe['dietary_restriction']); ?></td>
-                                    <td><?php echo htmlspecialchars($recipe['image_url']); ?></td>
+                                    <td>
+                                        <img class="db-table-image" src="<?php echo htmlspecialchars($recipe['image_url'] ?: 'logo.png'); ?>" alt="Recipe image">
+                                    </td>
                                     <td><?php echo htmlspecialchars($recipe['created_at']); ?></td>
                                     <td>
                                         <form method="post" action="db_table.php"
@@ -162,22 +164,31 @@ $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN use
 
                         <label>Meal Type</label>
                         <select name="meal_type">
+                            <option value="All" <?php echo (($_POST['meal_type'] ?? 'All') === 'All') ? 'selected' : ''; ?>>All</option>
                             <option value="Breakfast" <?php echo (($_POST['meal_type'] ?? '') === 'Breakfast') ? 'selected' : ''; ?>>Breakfast</option>
-                            <option value="Lunch" <?php echo (($_POST['meal_type'] ?? 'Lunch') === 'Lunch') ? 'selected' : ''; ?>>Lunch</option>
+                            <option value="Lunch" <?php echo (($_POST['meal_type'] ?? '') === 'Lunch') ? 'selected' : ''; ?>>Lunch</option>
                             <option value="Dinner" <?php echo (($_POST['meal_type'] ?? '') === 'Dinner') ? 'selected' : ''; ?>>Dinner</option>
                             <option value="Snack" <?php echo (($_POST['meal_type'] ?? '') === 'Snack') ? 'selected' : ''; ?>>Snack</option>
                         </select>
 
                         <label>Duration</label>
                         <select name="duration">
+                            <option value="All" <?php echo (($_POST['duration'] ?? 'All') === 'All') ? 'selected' : ''; ?>>All</option>
                             <option value="Under 15 Min" <?php echo (($_POST['duration'] ?? '') === 'Under 15 Min') ? 'selected' : ''; ?>>Under 15 Min</option>
-                            <option value="15-30 Min" <?php echo (($_POST['duration'] ?? '15-30 Min') === '15-30 Min') ? 'selected' : ''; ?>>15-30 Min</option>
+                            <option value="15-30 Min" <?php echo (($_POST['duration'] ?? '') === '15-30 Min') ? 'selected' : ''; ?>>15-30 Min</option>
                             <option value="30-60 Min" <?php echo (($_POST['duration'] ?? '') === '30-60 Min') ? 'selected' : ''; ?>>30-60 Min</option>
                             <option value="Over 60 Min" <?php echo (($_POST['duration'] ?? '') === 'Over 60 Min') ? 'selected' : ''; ?>>Over 60 Min</option>
                         </select>
 
                         <label>Dietary Restriction</label>
-                        <input type="text" name="dietary_restriction" value="<?php echo htmlspecialchars($_POST['dietary_restriction'] ?? ''); ?>">
+                        <select name="dietary_restriction">
+                            <option value="" <?php echo (($_POST['dietary_restriction'] ?? '') === '') ? 'selected' : ''; ?>>All</option>
+                            <option value="Vegan" <?php echo (($_POST['dietary_restriction'] ?? '') === 'Vegan') ? 'selected' : ''; ?>>Vegan</option>
+                            <option value="Vegetarian" <?php echo (($_POST['dietary_restriction'] ?? '') === 'Vegetarian') ? 'selected' : ''; ?>>Vegetarian</option>
+                            <option value="Gluten-free" <?php echo (($_POST['dietary_restriction'] ?? '') === 'Gluten-free') ? 'selected' : ''; ?>>Gluten-free</option>
+                            <option value="Halal" <?php echo (($_POST['dietary_restriction'] ?? '') === 'Halal') ? 'selected' : ''; ?>>Halal</option>
+                            <option value="Lactose-free" <?php echo (($_POST['dietary_restriction'] ?? '') === 'Lactose-free') ? 'selected' : ''; ?>>Lactose-free</option>
+                        </select>
 
                         <label>Image URL</label>
                         <input type="url" name="image_url" value="<?php echo htmlspecialchars($_POST['image_url'] ?? ''); ?>">

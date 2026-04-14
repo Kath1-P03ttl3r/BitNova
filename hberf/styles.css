@@ -164,6 +164,14 @@ textarea {
     padding: 28px 34px 50px;
 }
 
+.db-table-layout {
+    grid-template-columns: 1fr;
+}
+
+.db-table-layout .sidebar {
+    margin-top: 24px;
+}
+
 .table-panel,
 .sidebar {
     background: rgba(255, 255, 255, 0.95);
@@ -188,6 +196,13 @@ textarea {
     padding: 14px 16px;
     text-align: left;
     vertical-align: top;
+}
+
+.db-table-image {
+    width: 120px;
+    height: auto;
+    border-radius: 16px;
+    object-fit: cover;
 }
 
 .db-table th {

@@ -126,7 +126,7 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <article class="recipe-card">
                                 <a href="detail.php?id=<?php echo $recipe['id']; ?>">
                                     <div class="card-image"
-                                        style="background-image:url('<?php echo htmlspecialchars($recipe['image_url'] ?: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80'); ?>');">
+                                        style="background-image:url('<?php echo htmlspecialchars($recipe['image_url'] ?: 'logo.png'); ?>');">
                                     </div>
                                 </a>
                                 <div class="card-body">

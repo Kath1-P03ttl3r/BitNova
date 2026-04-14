@@ -38,7 +38,7 @@ if (!$recipe) {
         <main class="recipe-detail">
             <article class="detail-card">
                 <div class="detail-image"
-                    style="background-image:url('<?php echo htmlspecialchars($recipe['image_url'] ?: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=80'); ?>');">
+                    style="background-image:url('<?php echo htmlspecialchars($recipe['image_url'] ?: 'logo.png'); ?>');">
                 </div>
                 <div class="detail-body">
                     <h1><?php echo htmlspecialchars($recipe['title']); ?></h1>
