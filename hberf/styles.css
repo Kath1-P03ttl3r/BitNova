@@ -388,20 +388,21 @@ textarea {
     display: grid;
     place-items: center;
     min-height: calc(100vh - 120px);
-    padding: 34px;
+    padding: 24px;
 }
 
 .detail-card {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 28px;
-    width: min(760px, 100%);
+    grid-template-columns: 1.16fr 1fr;
+    gap: 36px;
+    width: min(1380px, 96vw);
 }
 
 .detail-image {
-    min-height: 420px;
+    min-height: 680px;
     background-size: cover;
-    background-position: center;
+    background-position: center center;
+    background-repeat: no-repeat;
     border-radius: 28px;
 }
 
