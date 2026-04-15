@@ -538,7 +538,7 @@ textarea {
 }
 
 .landing-logo {
-    width: clamp(170px, 28vw, 240px);
+    width: clamp(150px, 24vw, 210px);
     height: auto;
     display: block;
 }
@@ -546,7 +546,7 @@ textarea {
 .landing-content {
     display: grid;
     gap: 20px;
-    margin-top: 6px;
+    margin-top: -2px;
 }
 
 .landing-card h1 {

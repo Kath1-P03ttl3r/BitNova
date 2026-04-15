@@ -22,7 +22,7 @@ require_once 'db.php';
     <div class="landing-container">
         <div class="landing-card">
             <div class="landing-logo-wrap">
-                <img src="logo.png" alt="CookingBit" class="landing-logo">
+                <img src="CookingBit-Logo-updated.png" alt="CookingBit" class="landing-logo">
             </div>
             <div class="landing-content">
                 <h1>Welcome to CookingBit</h1>
