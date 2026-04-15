@@ -9,6 +9,7 @@ if (!$recipe) {
     header('Location: dashboard.php');
     exit;
 }
+$isFavourite = $user ? isFavourite($user['id'], $recipe['id']) : false;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +42,15 @@ if (!$recipe) {
                     style="background-image:url('<?php echo htmlspecialchars($recipe['image_url'] ?: 'logo.png'); ?>');">
                 </div>
                 <div class="detail-body">
-                    <h1><?php echo htmlspecialchars($recipe['title']); ?></h1>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <h1><?php echo htmlspecialchars($recipe['title']); ?></h1>
+                        <?php if ($user): ?>
+                            <button id="favourite-btn" class="favourite-btn <?php echo $isFavourite ? 'favourited' : ''; ?>"
+                                onclick="toggleFavourite(<?php echo $recipe['id']; ?>, this)">
+                                ♥
+                            </button>
+                        <?php endif; ?>
+                    </div>
                     <p class="meta-chip"><?php echo htmlspecialchars($recipe['meal_type']); ?> ·
                         <?php echo htmlspecialchars($recipe['duration']); ?><?php if ($recipe['dietary_restriction']): ?>
                             · <?php echo htmlspecialchars($recipe['dietary_restriction']); ?><?php endif; ?>

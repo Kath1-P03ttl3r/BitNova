@@ -31,6 +31,16 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS recipes (
     FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 )");
 
+$pdo->exec("CREATE TABLE IF NOT EXISTS favourites (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    recipe_id INTEGER NOT NULL,
+    created_at TEXT NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY(recipe_id) REFERENCES recipes(id) ON DELETE CASCADE,
+    UNIQUE(user_id, recipe_id)
+)");
+
 $existingColumns = $pdo->query("PRAGMA table_info(recipes)")->fetchAll(PDO::FETCH_ASSOC);
 $columnNames = array_column($existingColumns, 'name');
 if (!in_array('dietary_restriction', $columnNames, true)) {
@@ -131,5 +141,27 @@ function requireAdmin()
     if (!isAdmin()) {
         header('Location: dashboard.php');
         exit;
+    }
+}
+
+function isFavourite($userId, $recipeId)
+{
+    global $pdo;
+    $stmt = $pdo->prepare('SELECT COUNT(*) FROM favourites WHERE user_id = ? AND recipe_id = ?');
+    $stmt->execute([$userId, $recipeId]);
+    return $stmt->fetchColumn() > 0;
+}
+
+function toggleFavourite($userId, $recipeId)
+{
+    global $pdo;
+    if (isFavourite($userId, $recipeId)) {
+        $stmt = $pdo->prepare('DELETE FROM favourites WHERE user_id = ? AND recipe_id = ?');
+        $stmt->execute([$userId, $recipeId]);
+        return false; // removed
+    } else {
+        $stmt = $pdo->prepare('INSERT INTO favourites(user_id, recipe_id, created_at) VALUES (?, ?, ?)');
+        $stmt->execute([$userId, $recipeId, date('Y-m-d H:i:s')]);
+        return true; // added
     }
 }

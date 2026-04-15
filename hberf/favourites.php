@@ -1,6 +1,8 @@
 <?php
 require_once 'db.php';
+requireLogin();
 $user = currentUser();
+
 $search = trim($_GET['search'] ?? '');
 $mealType = $_GET['meal_type'] ?? '';
 $duration = $_GET['duration'] ?? '';
@@ -8,29 +10,29 @@ $dietaryRestriction = $_GET['dietary_restriction'] ?? '';
 $conditions = [];
 $params = [];
 if ($search !== '') {
-    $conditions[] = '(title LIKE ? OR description LIKE ? OR ingredients LIKE ?)';
+    $conditions[] = '(r.title LIKE ? OR r.description LIKE ? OR r.ingredients LIKE ?)';
     $params[] = "%$search%";
     $params[] = "%$search%";
     $params[] = "%$search%";
 }
 if ($mealType !== '' && $mealType !== 'All') {
-    $conditions[] = 'meal_type = ?';
+    $conditions[] = 'r.meal_type = ?';
     $params[] = $mealType;
 }
 if ($duration !== '' && $duration !== 'All') {
-    $conditions[] = 'duration = ?';
+    $conditions[] = 'r.duration = ?';
     $params[] = $duration;
 }
 if ($dietaryRestriction !== '') {
-    $conditions[] = 'dietary_restriction = ?';
+    $conditions[] = 'r.dietary_restriction = ?';
     $params[] = $dietaryRestriction;
 }
 $where = '';
 if ($conditions) {
-    $where = 'WHERE ' . implode(' AND ', $conditions);
+    $where = 'AND ' . implode(' AND ', $conditions);
 }
-$stmt = $pdo->prepare("SELECT * FROM recipes $where ORDER BY created_at DESC");
-$stmt->execute($params);
+$stmt = $pdo->prepare("SELECT r.*, u.username FROM recipes r JOIN users u ON r.user_id = u.id JOIN favourites f ON f.recipe_id = r.id WHERE f.user_id = ? $where ORDER BY f.created_at DESC");
+$stmt->execute(array_merge([$user['id']], $params));
 $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
@@ -39,7 +41,7 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Recipes - CookingBit</title>
+    <title>My Favourites - CookingBit</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -48,27 +50,22 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <header class="topbar">
             <div class="brand"><a href="dashboard.php"><img src="logo.png" alt="CookingBit logo"></a></div>
             <div class="top-actions">
-                <?php if ($user): ?>
-                    <span>Welcome, <?php echo htmlspecialchars($user['username']); ?></span>
-                    <a class="button" href="add_recipe.php">Add Recipe</a>
-                    <a class="button" href="favourites.php">Favourites</a>
-                    <?php if (isAdmin()): ?>
-                        <a class="button" href="db_table.php">DB Table</a>
-                    <?php endif; ?>
-                    <a class="button" href="logout.php">Logout</a>
-                <?php else: ?>
-                    <a class="button" href="login.php">Login</a>
-                    <a class="button orange" href="register.php">Register</a>
+                <span>Welcome, <?php echo htmlspecialchars($user['username']); ?></span>
+                <a class="button" href="add_recipe.php">Add Recipe</a>
+                <a class="button" href="dashboard.php">All Recipes</a>
+                <?php if (isAdmin()): ?>
+                    <a class="button" href="db_table.php">DB Table</a>
                 <?php endif; ?>
+                <a class="button" href="logout.php">Logout</a>
             </div>
         </header>
         <main class="content-grid">
             <aside class="sidebar">
-                <form method="get" action="dashboard.php" class="filter-form">
+                <form method="get" action="favourites.php" class="filter-form">
                     <div class="filter-group">
                         <label>Search</label>
                         <input type="search" name="search" value="<?php echo htmlspecialchars($search); ?>"
-                            placeholder="Search recipes...">
+                            placeholder="Search favourites...">
                     </div>
                     <div class="filter-group">
                         <label>Meal Type</label>
@@ -115,26 +112,24 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         $hasActiveFilter = $search !== '' || ($mealType !== '' && $mealType !== 'All') || ($duration !== '' && $duration !== 'All') || $dietaryRestriction !== '';
                         if ($hasActiveFilter):
                             ?>
-                            <a class="button" href="dashboard.php" style="text-decoration: none;">Reset</a>
+                            <a class="button" href="favourites.php" style="text-decoration: none;">Reset</a>
                         <?php endif; ?>
                     </div>
                 </form>
             </aside>
             <section class="recipe-board">
+                <h1>My Favourite Recipes</h1>
                 <?php if ($recipes): ?>
                     <div class="card-grid">
                         <?php foreach ($recipes as $recipe): ?>
-                            <?php $isFavourite = $user ? isFavourite($user['id'], $recipe['id']) : false; ?>
                             <article class="recipe-card">
                                 <a href="detail.php?id=<?php echo $recipe['id']; ?>">
                                     <div class="card-image"
                                         style="background-image:url('<?php echo htmlspecialchars($recipe['image_url'] ?: 'logo.png'); ?>');">
                                     </div>
                                 </a>
-                                <?php if ($user): ?>
-                                    <button class="favourite-btn <?php echo $isFavourite ? 'favourited' : ''; ?>"
-                                        onclick="toggleFavourite(<?php echo $recipe['id']; ?>, this)">♥</button>
-                                <?php endif; ?>
+                                <button class="favourite-btn favourited"
+                                    onclick="toggleFavourite(<?php echo $recipe['id']; ?>, this)">♥</button>
                                 <div class="card-body">
                                     <h2><?php echo htmlspecialchars($recipe['title']); ?></h2>
                                     <p><?php echo htmlspecialchars($recipe['description']); ?></p>
@@ -151,7 +146,8 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 <?php else: ?>
                     <div class="empty-state">
-                        <p>No recipes match your filters yet. Add a new recipe or adjust the search.</p>
+                        <p>You haven't favourited any recipes yet. Browse recipes and click the heart to add them here.</p>
+                        <a class="button orange" href="dashboard.php">Browse Recipes</a>
                     </div>
                 <?php endif; ?>
             </section>

@@ -41,3 +41,25 @@ function downloadRecipePdf() {
     doc.text(splitSteps, margin, y);
     doc.save(`${data.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`);
 }
+
+async function toggleFavourite(recipeId, btn) {
+    try {
+        const response = await fetch('toggle_favourite.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `recipe_id=${recipeId}`
+        });
+        const data = await response.json();
+        if (data.success) {
+            btn.classList.toggle('favourited', data.isFavourite);
+            // If on favourites page and recipe was unfavourited, remove the card
+            if (!data.isFavourite && window.location.href.includes('favourites.php')) {
+                btn.closest('.recipe-card').remove();
+            }
+        }
+    } catch (error) {
+        console.error('Error toggling favourite:', error);
+    }
+}

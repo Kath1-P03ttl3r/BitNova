@@ -198,6 +198,40 @@ textarea {
     vertical-align: top;
 }
 
+.favourite-btn {
+    background: none;
+    border: 2px solid #ddd;
+    color: #ddd;
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.favourite-btn:hover {
+    border-color: #d97528;
+    color: #d97528;
+}
+
+.favourite-btn.favourited {
+    border-color: #d97528;
+    color: #d97528;
+    background: #ffe6d1;
+}
+
+.recipe-card .favourite-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    z-index: 10;
+}
+
 .db-table-image {
     width: 120px;
     height: auto;
@@ -289,6 +323,7 @@ textarea {
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .card-image {
