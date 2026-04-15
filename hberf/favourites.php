@@ -43,6 +43,7 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Favourites - CookingBit</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js" defer></script>
 </head>
 
 <body>
@@ -129,7 +130,7 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                 </a>
                                 <button class="favourite-btn favourited"
-                                    onclick="toggleFavourite(<?php echo $recipe['id']; ?>, this)">♥</button>
+                                    onclick="toggleFavourite(<?php echo $recipe['id']; ?>, this, event)">♥</button>
                                 <div class="card-body">
                                     <h2><?php echo htmlspecialchars($recipe['title']); ?></h2>
                                     <p><?php echo htmlspecialchars($recipe['description']); ?></p>

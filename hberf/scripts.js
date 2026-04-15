@@ -42,7 +42,8 @@ function downloadRecipePdf() {
     doc.save(`${data.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`);
 }
 
-async function toggleFavourite(recipeId, btn) {
+async function toggleFavourite(recipeId, btn, event) {
+    event.stopPropagation();
     try {
         const response = await fetch('toggle_favourite.php', {
             method: 'POST',

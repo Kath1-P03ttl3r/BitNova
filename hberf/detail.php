@@ -46,7 +46,7 @@ $isFavourite = $user ? isFavourite($user['id'], $recipe['id']) : false;
                         <h1><?php echo htmlspecialchars($recipe['title']); ?></h1>
                         <?php if ($user): ?>
                             <button id="favourite-btn" class="favourite-btn <?php echo $isFavourite ? 'favourited' : ''; ?>"
-                                onclick="toggleFavourite(<?php echo $recipe['id']; ?>, this)">
+                                onclick="toggleFavourite(<?php echo $recipe['id']; ?>, this, event)">
                                 ♥
                             </button>
                         <?php endif; ?>
