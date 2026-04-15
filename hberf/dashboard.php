@@ -8,28 +8,28 @@ $dietaryRestriction = $_GET['dietary_restriction'] ?? '';
 $conditions = [];
 $params = [];
 if ($search !== '') {
-    $conditions[] = '(title LIKE ? OR description LIKE ? OR ingredients LIKE ?)';
+    $conditions[] = '(r.title LIKE ? OR r.description LIKE ? OR r.ingredients LIKE ?)';
     $params[] = "%$search%";
     $params[] = "%$search%";
     $params[] = "%$search%";
 }
 if ($mealType !== '' && $mealType !== 'All') {
-    $conditions[] = 'meal_type = ?';
+    $conditions[] = 'r.meal_type = ?';
     $params[] = $mealType;
 }
 if ($duration !== '' && $duration !== 'All') {
-    $conditions[] = 'duration = ?';
+    $conditions[] = 'r.duration = ?';
     $params[] = $duration;
 }
 if ($dietaryRestriction !== '') {
-    $conditions[] = 'dietary_restriction = ?';
+    $conditions[] = 'r.dietary_restriction = ?';
     $params[] = $dietaryRestriction;
 }
 $where = '';
 if ($conditions) {
     $where = 'WHERE ' . implode(' AND ', $conditions);
 }
-$stmt = $pdo->prepare("SELECT * FROM recipes $where ORDER BY created_at DESC");
+$stmt = $pdo->prepare("SELECT r.*, COALESCE(AVG(rr.rating), 0) AS average_rating, COUNT(rr.id) AS rating_count FROM recipes r LEFT JOIN recipe_ratings rr ON rr.recipe_id = r.id $where GROUP BY r.id ORDER BY r.created_at DESC");
 $stmt->execute($params);
 $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -145,6 +145,14 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <?php if ($recipe['dietary_restriction']): ?><span
                                                 class="tag"><?php echo htmlspecialchars($recipe['dietary_restriction']); ?></span><?php endif; ?>
                                     </div>
+                                    <p class="rating-meta">
+                                        <?php if ((int) $recipe['rating_count'] > 0): ?>
+                                            ★ <?php echo number_format((float) $recipe['average_rating'], 1); ?>/5
+                                            (<?php echo (int) $recipe['rating_count']; ?>)
+                                        <?php else: ?>
+                                            ★ Not rated yet
+                                        <?php endif; ?>
+                                    </p>
                                     <a class="link-button" href="detail.php?id=<?php echo $recipe['id']; ?>">Read more</a>
                                 </div>
                             </article>

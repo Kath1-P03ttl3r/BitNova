@@ -41,6 +41,18 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS favourites (
     UNIQUE(user_id, recipe_id)
 )");
 
+$pdo->exec("CREATE TABLE IF NOT EXISTS recipe_ratings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    recipe_id INTEGER NOT NULL,
+    rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY(recipe_id) REFERENCES recipes(id) ON DELETE CASCADE,
+    UNIQUE(user_id, recipe_id)
+)");
+
 $existingColumns = $pdo->query("PRAGMA table_info(recipes)")->fetchAll(PDO::FETCH_ASSOC);
 $columnNames = array_column($existingColumns, 'name');
 if (!in_array('dietary_restriction', $columnNames, true)) {
@@ -164,4 +176,33 @@ function toggleFavourite($userId, $recipeId)
         $stmt->execute([$userId, $recipeId, date('Y-m-d H:i:s')]);
         return true; // added
     }
+}
+
+function getUserRating($userId, $recipeId)
+{
+    global $pdo;
+    $stmt = $pdo->prepare('SELECT rating FROM recipe_ratings WHERE user_id = ? AND recipe_id = ?');
+    $stmt->execute([$userId, $recipeId]);
+    $rating = $stmt->fetchColumn();
+    return $rating === false ? null : (int) $rating;
+}
+
+function setRecipeRating($userId, $recipeId, $rating)
+{
+    global $pdo;
+    $now = date('Y-m-d H:i:s');
+    $stmt = $pdo->prepare('INSERT INTO recipe_ratings(user_id, recipe_id, rating, created_at, updated_at) VALUES (?, ?, ?, ?, ?) ON CONFLICT(user_id, recipe_id) DO UPDATE SET rating = excluded.rating, updated_at = excluded.updated_at');
+    $stmt->execute([$userId, $recipeId, $rating, $now, $now]);
+}
+
+function getRecipeRatingSummary($recipeId)
+{
+    global $pdo;
+    $stmt = $pdo->prepare('SELECT COUNT(*) AS rating_count, COALESCE(AVG(rating), 0) AS average_rating FROM recipe_ratings WHERE recipe_id = ?');
+    $stmt->execute([$recipeId]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return [
+        'rating_count' => (int) ($row['rating_count'] ?? 0),
+        'average_rating' => (float) ($row['average_rating'] ?? 0),
+    ];
 }

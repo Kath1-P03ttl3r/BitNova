@@ -429,6 +429,49 @@ textarea {
     font-size: 0.95rem;
 }
 
+.rating-meta {
+    margin: 0 0 14px;
+    color: #8c6c2a;
+    font-weight: 700;
+}
+
+.rating-section {
+    border-top: 1px solid #eadbc7;
+    padding-top: 18px;
+}
+
+.rating-form {
+    display: grid;
+    gap: 12px;
+}
+
+.star-input {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    gap: 4px;
+    width: fit-content;
+}
+
+.star-input input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.star-input label {
+    cursor: pointer;
+    font-size: 2rem;
+    color: #d9cfc2;
+    line-height: 1;
+    transition: color 0.15s ease;
+}
+
+.star-input label:hover,
+.star-input label:hover~label,
+.star-input input:checked~label {
+    color: #d97528;
+}
+
 .detail-section h2 {
     margin-bottom: 10px;
 }
