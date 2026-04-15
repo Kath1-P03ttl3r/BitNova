@@ -11,7 +11,7 @@ require_once 'db.php';
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
+<body class="landing-page">
     <div class="topbar">
         <div class="brand">
             <a href="dashboard.php"><img src="logo.png" alt="CookingBit"></a>
@@ -21,13 +21,18 @@ require_once 'db.php';
 
     <div class="landing-container">
         <div class="landing-card">
-            <h1>Welcome to CookingBit</h1>
-            <p>Discover amazing recipes and share your culinary creations with our community.</p>
+            <div class="landing-logo-wrap">
+                <img src="logo.png" alt="CookingBit" class="landing-logo">
+            </div>
+            <div class="landing-content">
+                <h1>Welcome to CookingBit</h1>
+                <p>Discover amazing recipes and share your culinary creations with our community.</p>
 
-            <div class="landing-buttons">
-                <a href="login.php" class="button orange">Login</a>
-                <a href="register.php" class="button orange">Register</a>
-                <a href="dashboard.php" class="button" style="background: #d97528; color: white;">Browse as Guest</a>
+                <div class="landing-buttons">
+                    <a href="login.php" class="button orange">Login</a>
+                    <a href="register.php" class="button orange">Register</a>
+                </div>
+                <a href="dashboard.php" class="landing-guest-link">Browse as Guest</a>
             </div>
         </div>
     </div>

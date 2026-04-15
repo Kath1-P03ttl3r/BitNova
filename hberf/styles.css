@@ -526,9 +526,27 @@ textarea {
 
 .landing-card {
     text-align: center;
-    width: min(500px, 100%);
+    width: min(560px, 100%);
+    display: grid;
+    gap: 14px;
+}
+
+.landing-logo-wrap {
+    display: flex;
+    justify-content: center;
+    background: #f4e7d8;
+}
+
+.landing-logo {
+    width: clamp(170px, 28vw, 240px);
+    height: auto;
+    display: block;
+}
+
+.landing-content {
     display: grid;
     gap: 20px;
+    margin-top: 6px;
 }
 
 .landing-card h1 {
@@ -548,6 +566,18 @@ textarea {
     display: flex;
     gap: 16px;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 8px;
     flex-wrap: wrap;
+}
+
+.landing-guest-link {
+    display: inline-block;
+    margin-top: -6px;
+    color: #d97528;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.landing-guest-link:hover {
+    text-decoration: underline;
 }
