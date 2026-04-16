@@ -72,20 +72,16 @@ $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN use
         <header class="topbar">
             <div class="brand"><a href="dashboard.php"><img src="logo.png" alt="CookingBit logo"></a></div>
             <div class="top-actions">
-                <a class="button" href="dashboard.php">Dashboard</a>
-                <?php if ($user): ?>
-                    <span>Welcome, <?php echo htmlspecialchars($user['username']); ?></span>
-                    <a class="button" href="logout.php">Logout</a>
-                <?php else: ?>
-                    <a class="button" href="login.php">Login</a>
-                    <a class="button orange" href="register.php">Register</a>
-                <?php endif; ?>
+                <a class="button" href="dashboard.php">Back</a>
+                <a class="button icon-only-button logout-icon" href="logout.php" title="Log out"
+                    aria-label="Log out">&#x21AA;</a>
             </div>
         </header>
 
         <main class="content-grid db-table-layout">
             <section class="table-panel">
-                <div class="table-header-row" style="display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px; flex-wrap: wrap;">
+                <div class="table-header-row"
+                    style="display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px; flex-wrap: wrap;">
                     <h1>Recipe Database</h1>
                     <a class="button orange" href="add_recipe.php">Add Recipe</a>
                 </div>
@@ -130,7 +126,9 @@ $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN use
                                     <td><?php echo htmlspecialchars($recipe['duration']); ?></td>
                                     <td><?php echo htmlspecialchars($recipe['dietary_restriction']); ?></td>
                                     <td>
-                                        <img class="db-table-image" src="<?php echo htmlspecialchars($recipe['image_url'] ?: 'logo.png'); ?>" alt="Recipe image">
+                                        <img class="db-table-image"
+                                            src="<?php echo htmlspecialchars($recipe['image_url'] ?: 'logo.png'); ?>"
+                                            alt="Recipe image">
                                     </td>
                                     <td><?php echo htmlspecialchars($recipe['created_at']); ?></td>
                                     <td>
@@ -151,16 +149,20 @@ $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN use
                     <h2>Add new recipe directly</h2>
                     <form method="post" action="db_table.php">
                         <label>Title</label>
-                        <input type="text" name="title" required value="<?php echo htmlspecialchars($_POST['title'] ?? ''); ?>">
+                        <input type="text" name="title" required
+                            value="<?php echo htmlspecialchars($_POST['title'] ?? ''); ?>">
 
                         <label>Description</label>
-                        <textarea name="description" required><?php echo htmlspecialchars($_POST['description'] ?? ''); ?></textarea>
+                        <textarea name="description"
+                            required><?php echo htmlspecialchars($_POST['description'] ?? ''); ?></textarea>
 
                         <label>Ingredients</label>
-                        <textarea name="ingredients" required><?php echo htmlspecialchars($_POST['ingredients'] ?? ''); ?></textarea>
+                        <textarea name="ingredients"
+                            required><?php echo htmlspecialchars($_POST['ingredients'] ?? ''); ?></textarea>
 
                         <label>Steps</label>
-                        <textarea name="steps" required><?php echo htmlspecialchars($_POST['steps'] ?? ''); ?></textarea>
+                        <textarea name="steps"
+                            required><?php echo htmlspecialchars($_POST['steps'] ?? ''); ?></textarea>
 
                         <label>Meal Type</label>
                         <select name="meal_type">
@@ -191,7 +193,8 @@ $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN use
                         </select>
 
                         <label>Image URL</label>
-                        <input type="url" name="image_url" value="<?php echo htmlspecialchars($_POST['image_url'] ?? ''); ?>">
+                        <input type="url" name="image_url"
+                            value="<?php echo htmlspecialchars($_POST['image_url'] ?? ''); ?>">
 
                         <div class="form-actions" style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px;">
                             <button class="button orange" type="submit">Add row</button>
@@ -201,10 +204,10 @@ $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN use
                 </div>
             </section>
         </main>
-                    </div>
-                </form>
-            </aside>
-        </main>
+    </div>
+    </form>
+    </aside>
+    </main>
     </div>
 </body>
 

@@ -1,6 +1,13 @@
 <?php
 require_once 'db.php';
 $user = currentUser();
+$showMyRecipesButton = false;
+if ($user && !isAdmin()) {
+    $ownedRecipeCountStmt = $pdo->prepare('SELECT COUNT(*) FROM recipes WHERE user_id = ?');
+    $ownedRecipeCountStmt->execute([$user['id']]);
+    $showMyRecipesButton = ((int) $ownedRecipeCountStmt->fetchColumn()) > 0;
+}
+
 $search = trim($_GET['search'] ?? '');
 $mealType = $_GET['meal_type'] ?? '';
 $duration = $_GET['duration'] ?? '';
@@ -50,13 +57,19 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="brand"><a href="dashboard.php"><img src="logo.png" alt="CookingBit logo"></a></div>
             <div class="top-actions">
                 <?php if ($user): ?>
-                    <span>Welcome, <?php echo htmlspecialchars($user['username']); ?></span>
+                    <?php if ($showMyRecipesButton): ?>
+                        <a class="button" href="my_recipes.php">My Recipes</a>
+                    <?php endif; ?>
                     <a class="button" href="add_recipe.php">Add Recipe</a>
-                    <a class="button" href="favourites.php">Favourites</a>
+                    <?php if (!isAdmin()): ?>
+                        <a class="button icon-only-button" href="favourites.php" title="My Favourites"
+                            aria-label="My Favourites">&hearts;</a>
+                    <?php endif; ?>
                     <?php if (isAdmin()): ?>
                         <a class="button" href="db_table.php">DB Table</a>
                     <?php endif; ?>
-                    <a class="button" href="logout.php">Logout</a>
+                    <a class="button icon-only-button logout-icon" href="logout.php" title="Log out"
+                        aria-label="Log out">&#x21AA;</a>
                 <?php else: ?>
                     <a class="button" href="login.php">Login</a>
                     <a class="button orange" href="register.php">Register</a>

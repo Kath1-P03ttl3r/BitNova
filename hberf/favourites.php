@@ -51,13 +51,9 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <header class="topbar">
             <div class="brand"><a href="dashboard.php"><img src="logo.png" alt="CookingBit logo"></a></div>
             <div class="top-actions">
-                <span>Welcome, <?php echo htmlspecialchars($user['username']); ?></span>
-                <a class="button" href="add_recipe.php">Add Recipe</a>
-                <a class="button" href="dashboard.php">All Recipes</a>
-                <?php if (isAdmin()): ?>
-                    <a class="button" href="db_table.php">DB Table</a>
-                <?php endif; ?>
-                <a class="button" href="logout.php">Logout</a>
+                <a class="button" href="dashboard.php">Back</a>
+                <a class="button icon-only-button logout-icon" href="logout.php" title="Log out"
+                    aria-label="Log out">&#x21AA;</a>
             </div>
         </header>
         <main class="content-grid">
