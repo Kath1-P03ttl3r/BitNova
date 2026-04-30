@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     aria-label="Log out">&#x21AA;</a>
             </div>
         </header>
-        <main class="content-form">
+        <main class="content-form centered-form">
             <div class="form-card">
                 <h1>Add a new recipe</h1>
                 <?php if ($error): ?>

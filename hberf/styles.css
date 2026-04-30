@@ -416,6 +416,11 @@ textarea {
     padding: 34px;
 }
 
+.content-form.centered-form {
+    display: grid;
+    justify-items: center;
+}
+
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
