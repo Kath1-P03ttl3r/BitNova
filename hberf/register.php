@@ -14,6 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Please fill in all fields.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'Please use a valid email address.';
+    } elseif (strlen($password) < 6) {
+        $error = 'Password must be at least 6 characters long.';
     } elseif ($password !== $confirm) {
         $error = 'Passwords do not match.';
     } else {
@@ -54,9 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label>Email</label>
                 <input type="email" name="email" value="<?php echo htmlspecialchars($email ?? ''); ?>" required>
                 <label>Password</label>
-                <input type="password" name="password" required>
+                <input type="password" name="password" minlength="6" required>
                 <label>Confirm Password</label>
-                <input type="password" name="confirm" required>
+                <input type="password" name="confirm" minlength="6" required>
                 <button class="button orange" type="submit">Create Account</button>
             </form>
             <p>Already have an account? <a href="login.php">Login here</a></p>
