@@ -7,6 +7,7 @@ body {
     font-family: Inter, system-ui, sans-serif;
     background: #f4e7d8;
     color: #2f2f2f;
+    padding-bottom: 68px;
 }
 
 button,
@@ -46,6 +47,30 @@ button:hover,
     padding: 18px 34px;
     background: #ebe1d1;
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.site-footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background: #ebe1d1;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.site-footer a {
+    color: #2f2f2f;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.site-footer a:hover {
+    text-decoration: underline;
 }
 
 .top-actions {

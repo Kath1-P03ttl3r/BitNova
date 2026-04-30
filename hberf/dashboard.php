@@ -179,6 +179,10 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </section>
         </main>
     </div>
+    <footer class="site-footer">
+        <a href="about.php">About us</a>
+        <span>&copy; 2026 - BitNova</span>
+    </footer>
 </body>
 
 </html>

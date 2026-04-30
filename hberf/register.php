@@ -33,12 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - CookingBit</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="auth-shell">
         <div class="auth-card">
@@ -60,5 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p>Already have an account? <a href="login.php">Login here</a></p>
         </div>
     </div>
+    <footer class="site-footer">
+        <a href="about.php">About us</a>
+        <span>&copy; 2026 - BitNova</span>
+    </footer>
 </body>
+
 </html>

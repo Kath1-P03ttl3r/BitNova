@@ -156,6 +156,10 @@ $ratingSummary = getRecipeRatingSummary($recipe['id']);
             author: <?php echo json_encode($recipe['username']); ?>
         };
     </script>
+    <footer class="site-footer">
+        <a href="about.php">About us</a>
+        <span>&copy; 2026 - BitNova</span>
+    </footer>
 </body>
 
 </html>
