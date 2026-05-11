@@ -2,19 +2,20 @@
 require_once 'db.php';
 requireLogin();
 $user = currentUser();
-
-if (isAdmin()) {
-    header('Location: dashboard.php');
-    exit;
-}
+$isAdminUser = isAdmin();
 
 $id = (int) ($_GET['id'] ?? 0);
-$stmt = $pdo->prepare('SELECT * FROM recipes WHERE id = ? AND user_id = ?');
-$stmt->execute([$id, $user['id']]);
+if ($isAdminUser) {
+    $stmt = $pdo->prepare('SELECT * FROM recipes WHERE id = ?');
+    $stmt->execute([$id]);
+} else {
+    $stmt = $pdo->prepare('SELECT * FROM recipes WHERE id = ? AND user_id = ?');
+    $stmt->execute([$id, $user['id']]);
+}
 $recipe = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$recipe) {
-    header('Location: my_recipes.php');
+    header('Location: ' . ($isAdminUser ? 'db_table.php' : 'my_recipes.php'));
     exit;
 }
 
@@ -41,21 +42,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($title === '' || $description === '' || $ingredients === '' || $steps === '' || $mealType === '' || $duration === '') {
         $error = 'Please fill in all required fields.';
     } else {
-        $stmt = $pdo->prepare('UPDATE recipes SET title = ?, description = ?, ingredients = ?, steps = ?, meal_type = ?, duration = ?, dietary_restriction = ?, image_url = ? WHERE id = ? AND user_id = ?');
-        $stmt->execute([
-            $title,
-            $description,
-            $ingredients,
-            $steps,
-            $mealType,
-            $duration,
-            $dietaryRestriction,
-            $imageUrl,
-            $id,
-            $user['id'],
-        ]);
+        if ($isAdminUser) {
+            $stmt = $pdo->prepare('UPDATE recipes SET title = ?, description = ?, ingredients = ?, steps = ?, meal_type = ?, duration = ?, dietary_restriction = ?, image_url = ? WHERE id = ?');
+            $stmt->execute([
+                $title,
+                $description,
+                $ingredients,
+                $steps,
+                $mealType,
+                $duration,
+                $dietaryRestriction,
+                $imageUrl,
+                $id,
+            ]);
+        } else {
+            $stmt = $pdo->prepare('UPDATE recipes SET title = ?, description = ?, ingredients = ?, steps = ?, meal_type = ?, duration = ?, dietary_restriction = ?, image_url = ? WHERE id = ? AND user_id = ?');
+            $stmt->execute([
+                $title,
+                $description,
+                $ingredients,
+                $steps,
+                $mealType,
+                $duration,
+                $dietaryRestriction,
+                $imageUrl,
+                $id,
+                $user['id'],
+            ]);
+        }
 
-        header('Location: my_recipes.php');
+        header('Location: ' . ($isAdminUser ? 'db_table.php' : 'my_recipes.php'));
         exit;
     }
 }
@@ -75,7 +91,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <header class="topbar">
             <div class="brand"><a href="dashboard.php"><img src="logo.png" alt="CookingBit logo"></a></div>
             <div class="top-actions">
-                <a class="button" href="my_recipes.php">Back to My Recipes</a>
+                <a class="button" href="<?php echo $isAdminUser ? 'db_table.php' : 'my_recipes.php'; ?>">
+                    <?php echo $isAdminUser ? 'Back to DB Table' : 'Back to My Recipes'; ?>
+                </a>
                 <a class="button icon-only-button logout-icon" href="logout.php" title="Log out"
                     aria-label="Log out">&#x21AA;</a>
             </div>

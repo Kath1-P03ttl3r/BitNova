@@ -132,12 +132,16 @@ $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN use
                                     </td>
                                     <td><?php echo htmlspecialchars($recipe['created_at']); ?></td>
                                     <td>
-                                        <form method="post" action="db_table.php"
-                                            onsubmit="return confirm('Bist du sicher, dass du dieses Rezept löschen möchtest?');">
-                                            <input type="hidden" name="delete_id"
-                                                value="<?php echo htmlspecialchars($recipe['id']); ?>">
-                                            <button class="button" type="submit">Delete</button>
-                                        </form>
+                                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                            <a class="button"
+                                                href="edit_recipe.php?id=<?php echo (int) $recipe['id']; ?>">Edit</a>
+                                            <form method="post" action="db_table.php"
+                                                onsubmit="return confirm('Bist du sicher, dass du dieses Rezept löschen möchtest?');">
+                                                <input type="hidden" name="delete_id"
+                                                    value="<?php echo htmlspecialchars($recipe['id']); ?>">
+                                                <button class="button" type="submit">Delete</button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
