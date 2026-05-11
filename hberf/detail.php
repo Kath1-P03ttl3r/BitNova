@@ -55,7 +55,8 @@ $ratingSummary = getRecipeRatingSummary($recipe['id']);
             <div class="top-actions">
                 <a class="button" href="dashboard.php">Back</a>
                 <?php if ($user): ?>
-                    <a class="button" href="logout.php">Logout</a>
+                    <a class="button icon-only-button logout-icon" href="logout.php" title="Log out"
+                        aria-label="Log out">&#x21AA;</a>
                 <?php else: ?>
                     <a class="button" href="login.php">Login</a>
                 <?php endif; ?>
