@@ -35,6 +35,7 @@ if (!$recipe) {
 $isFavourite = $user ? isFavourite($user['id'], $recipe['id']) : false;
 $currentUserRating = $user ? getUserRating($user['id'], $recipe['id']) : null;
 $ratingSummary = getRecipeRatingSummary($recipe['id']);
+$dietaryRestrictions = array_values(array_filter(array_map('trim', explode(',', (string) $recipe['dietary_restriction']))));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,10 +78,17 @@ $ratingSummary = getRecipeRatingSummary($recipe['id']);
                             </button>
                         <?php endif; ?>
                     </div>
-                    <p class="meta-chip"><?php echo htmlspecialchars($recipe['meal_type']); ?> ·
-                        <?php echo htmlspecialchars($recipe['duration']); ?><?php if ($recipe['dietary_restriction']): ?>
-                            · <?php echo htmlspecialchars($recipe['dietary_restriction']); ?><?php endif; ?>
+                    <p class="meta-chip">
+                        <?php echo htmlspecialchars($recipe['meal_type']); ?> ·
+                        <?php echo htmlspecialchars($recipe['duration']); ?>
                     </p>
+                    <?php if ($dietaryRestrictions): ?>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: -6px;">
+                            <?php foreach ($dietaryRestrictions as $restriction): ?>
+                                <span class="tag"><?php echo htmlspecialchars($restriction); ?></span>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                     <p class="small-text">Created by <?php echo htmlspecialchars($recipe['username']); ?></p>
                     <p class="detail-description"><?php echo htmlspecialchars($recipe['description']); ?></p>
                     <div class="detail-section">
