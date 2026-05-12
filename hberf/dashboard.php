@@ -11,7 +11,10 @@ if ($user && !isAdmin()) {
 $search = trim($_GET['search'] ?? '');
 $mealType = $_GET['meal_type'] ?? '';
 $duration = $_GET['duration'] ?? '';
-$dietaryRestriction = $_GET['dietary_restriction'] ?? '';
+$dietaryRestrictions = $_GET['dietary_restriction'] ?? [];
+if (!is_array($dietaryRestrictions)) {
+    $dietaryRestrictions = [];
+}
 $conditions = [];
 $params = [];
 if ($search !== '') {
@@ -28,9 +31,13 @@ if ($duration !== '' && $duration !== 'All') {
     $conditions[] = 'r.duration = ?';
     $params[] = $duration;
 }
-if ($dietaryRestriction !== '') {
-    $conditions[] = 'r.dietary_restriction = ?';
-    $params[] = $dietaryRestriction;
+if (!empty($dietaryRestrictions)) {
+    $restrictionConditions = [];
+    foreach ($dietaryRestrictions as $restriction) {
+        $restrictionConditions[] = 'r.dietary_restriction LIKE ?';
+        $params[] = "%$restriction%";
+    }
+    $conditions[] = '(' . implode(' OR ', $restrictionConditions) . ')';
 }
 $where = '';
 if ($conditions) {
@@ -94,6 +101,8 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <option value="Dinner" <?php echo $mealType === 'Dinner' ? ' selected' : ''; ?>>Dinner
                             </option>
                             <option value="Snack" <?php echo $mealType === 'Snack' ? ' selected' : ''; ?>>Snack</option>
+                            <option value="Dessert" <?php echo $mealType === 'Dessert' ? ' selected' : ''; ?>>Dessert
+                            </option>
                         </select>
                     </div>
                     <div class="filter-group">
@@ -112,21 +121,33 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                     <div class="filter-group">
                         <label>Dietary restrictions</label>
-                        <select name="dietary_restriction">
-                            <option value="" <?php echo $dietaryRestriction === '' ? ' selected' : ''; ?>>All</option>
-                            <option value="Vegan" <?php echo $dietaryRestriction === 'Vegan' ? ' selected' : ''; ?>>Vegan
-                            </option>
-                            <option value="Vegetarian" <?php echo $dietaryRestriction === 'Vegetarian' ? ' selected' : ''; ?>>Vegetarian</option>
-                            <option value="Gluten-free" <?php echo $dietaryRestriction === 'Gluten-free' ? ' selected' : ''; ?>>Gluten-free</option>
-                            <option value="Halal" <?php echo $dietaryRestriction === 'Halal' ? ' selected' : ''; ?>>Halal
-                            </option>
-                            <option value="Lactose-free" <?php echo $dietaryRestriction === 'Lactose-free' ? ' selected' : ''; ?>>Lactose-free</option>
-                        </select>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" name="dietary_restriction[]" value="Vegan" <?php echo in_array('Vegan', $dietaryRestrictions) ? ' checked' : ''; ?>>
+                                Vegan
+                            </label>
+                            <label>
+                                <input type="checkbox" name="dietary_restriction[]" value="Vegetarian" <?php echo in_array('Vegetarian', $dietaryRestrictions) ? ' checked' : ''; ?>>
+                                Vegetarian
+                            </label>
+                            <label>
+                                <input type="checkbox" name="dietary_restriction[]" value="Gluten-free" <?php echo in_array('Gluten-free', $dietaryRestrictions) ? ' checked' : ''; ?>>
+                                Gluten-free
+                            </label>
+                            <label>
+                                <input type="checkbox" name="dietary_restriction[]" value="Halal" <?php echo in_array('Halal', $dietaryRestrictions) ? ' checked' : ''; ?>>
+                                Halal
+                            </label>
+                            <label>
+                                <input type="checkbox" name="dietary_restriction[]" value="Lactose-free" <?php echo in_array('Lactose-free', $dietaryRestrictions) ? ' checked' : ''; ?>>
+                                Lactose-free
+                            </label>
+                        </div>
                     </div>
                     <div style="display: flex; gap: 12px;">
                         <button class="button orange" type="submit">Filter</button>
                         <?php
-                        $hasActiveFilter = $search !== '' || ($mealType !== '' && $mealType !== 'All') || ($duration !== '' && $duration !== 'All') || $dietaryRestriction !== '';
+                        $hasActiveFilter = $search !== '' || ($mealType !== '' && $mealType !== 'All') || ($duration !== '' && $duration !== 'All') || !empty($dietaryRestrictions);
                         if ($hasActiveFilter):
                             ?>
                             <a class="button" href="dashboard.php" style="text-decoration: none;">Reset</a>

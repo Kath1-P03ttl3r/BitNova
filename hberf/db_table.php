@@ -28,7 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $steps = trim($_POST['steps'] ?? '');
         $mealType = trim($_POST['meal_type'] ?? 'Lunch');
         $duration = trim($_POST['duration'] ?? '15-30 Min');
-        $dietaryRestriction = trim($_POST['dietary_restriction'] ?? '');
+        $dietaryRestrictionArray = $_POST['dietary_restriction'] ?? [];
+        $dietaryRestriction = is_array($dietaryRestrictionArray) ? implode(', ', $dietaryRestrictionArray) : '';
         $imageUrl = trim($_POST['image_url'] ?? '');
 
         if ($title === '' || $description === '' || $ingredients === '' || $steps === '') {
@@ -175,6 +176,7 @@ $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN use
                             <option value="Lunch" <?php echo (($_POST['meal_type'] ?? '') === 'Lunch') ? 'selected' : ''; ?>>Lunch</option>
                             <option value="Dinner" <?php echo (($_POST['meal_type'] ?? '') === 'Dinner') ? 'selected' : ''; ?>>Dinner</option>
                             <option value="Snack" <?php echo (($_POST['meal_type'] ?? '') === 'Snack') ? 'selected' : ''; ?>>Snack</option>
+                            <option value="Dessert" <?php echo (($_POST['meal_type'] ?? '') === 'Dessert') ? 'selected' : ''; ?>>Dessert</option>
                         </select>
 
                         <label>Duration</label>
@@ -187,14 +189,33 @@ $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN use
                         </select>
 
                         <label>Dietary Restriction</label>
-                        <select name="dietary_restriction">
-                            <option value="" <?php echo (($_POST['dietary_restriction'] ?? '') === '') ? 'selected' : ''; ?>>All</option>
-                            <option value="Vegan" <?php echo (($_POST['dietary_restriction'] ?? '') === 'Vegan') ? 'selected' : ''; ?>>Vegan</option>
-                            <option value="Vegetarian" <?php echo (($_POST['dietary_restriction'] ?? '') === 'Vegetarian') ? 'selected' : ''; ?>>Vegetarian</option>
-                            <option value="Gluten-free" <?php echo (($_POST['dietary_restriction'] ?? '') === 'Gluten-free') ? 'selected' : ''; ?>>Gluten-free</option>
-                            <option value="Halal" <?php echo (($_POST['dietary_restriction'] ?? '') === 'Halal') ? 'selected' : ''; ?>>Halal</option>
-                            <option value="Lactose-free" <?php echo (($_POST['dietary_restriction'] ?? '') === 'Lactose-free') ? 'selected' : ''; ?>>Lactose-free</option>
-                        </select>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" name="dietary_restriction[]" value="Vegan" <?php $selected = $_POST['dietary_restriction'] ?? [];
+                                echo (is_array($selected) && in_array('Vegan', $selected)) ? ' checked' : ''; ?>>
+                                Vegan
+                            </label>
+                            <label>
+                                <input type="checkbox" name="dietary_restriction[]" value="Vegetarian" <?php $selected = $_POST['dietary_restriction'] ?? [];
+                                echo (is_array($selected) && in_array('Vegetarian', $selected)) ? ' checked' : ''; ?>>
+                                Vegetarian
+                            </label>
+                            <label>
+                                <input type="checkbox" name="dietary_restriction[]" value="Gluten-free" <?php $selected = $_POST['dietary_restriction'] ?? [];
+                                echo (is_array($selected) && in_array('Gluten-free', $selected)) ? ' checked' : ''; ?>>
+                                Gluten-free
+                            </label>
+                            <label>
+                                <input type="checkbox" name="dietary_restriction[]" value="Halal" <?php $selected = $_POST['dietary_restriction'] ?? [];
+                                echo (is_array($selected) && in_array('Halal', $selected)) ? ' checked' : ''; ?>>
+                                Halal
+                            </label>
+                            <label>
+                                <input type="checkbox" name="dietary_restriction[]" value="Lactose-free" <?php $selected = $_POST['dietary_restriction'] ?? [];
+                                echo (is_array($selected) && in_array('Lactose-free', $selected)) ? ' checked' : ''; ?>>
+                                Lactose-free
+                            </label>
+                        </div>
 
                         <label>Image URL</label>
                         <input type="url" name="image_url"
@@ -208,10 +229,6 @@ $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN use
                 </div>
             </section>
         </main>
-    </div>
-    </form>
-    </aside>
-    </main>
     </div>
     <footer class="site-footer">
         <a href="about.php">About us</a>

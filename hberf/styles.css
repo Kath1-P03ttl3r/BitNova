@@ -342,12 +342,29 @@ textarea {
 }
 
 .checkbox-group {
-    display: flex;
-    align-items: center;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px 14px;
+    align-items: start;
 }
 
 .checkbox-group input {
-    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    margin: 2px 0 0;
+    flex: 0 0 auto;
+    accent-color: #d97528;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 0;
+    line-height: 1.35;
+    font-weight: 600;
+    min-width: 0;
 }
 
 .recipe-board {

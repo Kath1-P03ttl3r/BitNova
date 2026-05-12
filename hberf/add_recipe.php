@@ -10,7 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $steps = trim($_POST['steps'] ?? '');
     $mealType = $_POST['meal_type'] ?? '';
     $duration = $_POST['duration'] ?? '';
-    $dietaryRestriction = $_POST['dietary_restriction'] ?? '';
+    $dietaryRestrictionArray = $_POST['dietary_restriction'] ?? [];
+    $dietaryRestriction = is_array($dietaryRestrictionArray) ? implode(', ', $dietaryRestrictionArray) : '';
     $imageUrl = trim($_POST['image_url'] ?? '');
     if ($title === '' || $description === '' || $ingredients === '' || $steps === '' || $mealType === '' || $duration === '') {
         $error = 'Please fill in all required fields.';
@@ -72,6 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     Dinner</option>
                                 <option value="Snack" <?php echo ($mealType ?? '') === 'Snack' ? ' selected' : ''; ?>>
                                     Snack</option>
+                                <option value="Dessert" <?php echo ($mealType ?? '') === 'Dessert' ? ' selected' : ''; ?>>
+                                    Dessert</option>
                             </select>
                         </div>
                         <div>
@@ -86,16 +89,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                     <label>Dietary restrictions</label>
-                    <select name="dietary_restriction">
-                        <option value="" <?php echo ($dietaryRestriction ?? '') === '' ? ' selected' : ''; ?>>All</option>
-                        <option value="Vegan" <?php echo ($dietaryRestriction ?? '') === 'Vegan' ? ' selected' : ''; ?>>
-                            Vegan</option>
-                        <option value="Vegetarian" <?php echo ($dietaryRestriction ?? '') === 'Vegetarian' ? ' selected' : ''; ?>>Vegetarian</option>
-                        <option value="Gluten-free" <?php echo ($dietaryRestriction ?? '') === 'Gluten-free' ? ' selected' : ''; ?>>Gluten-free</option>
-                        <option value="Halal" <?php echo ($dietaryRestriction ?? '') === 'Halal' ? ' selected' : ''; ?>>
-                            Halal</option>
-                        <option value="Lactose-free" <?php echo ($dietaryRestriction ?? '') === 'Lactose-free' ? ' selected' : ''; ?>>Lactose-free</option>
-                    </select>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" name="dietary_restriction[]" value="Vegan" <?php echo in_array('Vegan', explode(', ', $dietaryRestriction ?? '')) ? ' checked' : ''; ?>>
+                            Vegan
+                        </label>
+                        <label>
+                            <input type="checkbox" name="dietary_restriction[]" value="Vegetarian" <?php echo in_array('Vegetarian', explode(', ', $dietaryRestriction ?? '')) ? ' checked' : ''; ?>>
+                            Vegetarian
+                        </label>
+                        <label>
+                            <input type="checkbox" name="dietary_restriction[]" value="Gluten-free" <?php echo in_array('Gluten-free', explode(', ', $dietaryRestriction ?? '')) ? ' checked' : ''; ?>>
+                            Gluten-free
+                        </label>
+                        <label>
+                            <input type="checkbox" name="dietary_restriction[]" value="Halal" <?php echo in_array('Halal', explode(', ', $dietaryRestriction ?? '')) ? ' checked' : ''; ?>>
+                            Halal
+                        </label>
+                        <label>
+                            <input type="checkbox" name="dietary_restriction[]" value="Lactose-free" <?php echo in_array('Lactose-free', explode(', ', $dietaryRestriction ?? '')) ? ' checked' : ''; ?>>
+                            Lactose-free
+                        </label>
+                    </div>
                     <label>Image URL</label>
                     <input type="url" name="image_url" placeholder="Optional image URL"
                         value="<?php echo htmlspecialchars($imageUrl ?? ''); ?>">
