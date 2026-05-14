@@ -47,6 +47,9 @@ button:hover,
     padding: 18px 34px;
     background: #ebe1d1;
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 0;
+    z-index: 200;
 }
 
 .site-footer {
@@ -381,7 +384,6 @@ textarea {
     background: #fff;
     border-radius: 24px;
     overflow: hidden;
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
     position: relative;
@@ -427,6 +429,13 @@ textarea {
     padding: 4px 12px;
 }
 
+.recipe-card .card-meta .tag {
+    flex-basis: 100%;
+    display: inline-flex;
+    align-self: flex-start;
+    margin-top: 2px;
+}
+
 .link-button {
     margin-top: auto;
     align-self: flex-start;
@@ -436,11 +445,10 @@ textarea {
 }
 
 .recipe-actions {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
     margin-top: auto;
-    align-items: stretch;
-    flex-wrap: nowrap;
 }
 
 .recipe-actions .recipe-action-form {
@@ -449,9 +457,20 @@ textarea {
 }
 
 .recipe-actions .recipe-action-form .button {
-    width: 124px;
-    min-width: 124px;
+    width: 100%;
+    min-width: 0;
     height: 46px;
+}
+
+.recipe-actions .recipe-action-form .button,
+.link-button {
+    min-height: 46px;
+}
+
+.link-button {
+    margin-top: 14px;
+    display: inline-flex;
+    align-items: center;
 }
 
 .content-form {
@@ -600,6 +619,43 @@ textarea {
     .form-row {
         grid-template-columns: 1fr;
     }
+
+    body.dashboard-shell {
+        overflow: auto;
+    }
+
+    body.dashboard-shell .content-grid {
+        height: auto;
+        overflow: visible;
+    }
+
+    body.dashboard-shell .recipe-board {
+        max-height: none;
+        overflow: visible;
+    }
+}
+
+body.dashboard-shell {
+    overflow: hidden;
+}
+
+body.dashboard-shell .content-grid {
+    align-items: start;
+    overflow: visible;
+}
+
+body.dashboard-shell .sidebar {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+}
+
+body.dashboard-shell .recipe-board {
+    min-height: 0;
+    max-height: calc(100vh - 210px);
+    overflow-y: auto;
+    padding-right: 6px;
+    padding-bottom: 24px;
 }
 
 .landing-container {

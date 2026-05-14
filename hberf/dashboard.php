@@ -58,7 +58,7 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script src="scripts.js" defer></script>
 </head>
 
-<body>
+<body class="dashboard-shell">
     <div class="page-shell">
         <header class="topbar">
             <div class="brand"><a href="dashboard.php"><img src="logo.png" alt="CookingBit logo"></a></div>
