@@ -1,8 +1,9 @@
 <?php
 require_once 'db.php';
 $user = currentUser();
+$isAdminUser = isAdmin();
 $showMyRecipesButton = false;
-if ($user && !isAdmin()) {
+if ($user && !$isAdminUser) {
     $ownedRecipeCountStmt = $pdo->prepare('SELECT COUNT(*) FROM recipes WHERE user_id = ?');
     $ownedRecipeCountStmt->execute([$user['id']]);
     $showMyRecipesButton = ((int) $ownedRecipeCountStmt->fetchColumn()) > 0;
@@ -68,11 +69,11 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <a class="button" href="my_recipes.php">My Recipes</a>
                     <?php endif; ?>
                     <a class="button" href="add_recipe.php">Add Recipe</a>
-                    <?php if (!isAdmin()): ?>
+                    <?php if (!$isAdminUser): ?>
                         <a class="button icon-only-button" href="favourites.php" title="My Favourites"
                             aria-label="My Favourites">&hearts;</a>
                     <?php endif; ?>
-                    <?php if (isAdmin()): ?>
+                    <?php if ($isAdminUser): ?>
                         <a class="button" href="db_table.php">DB Table</a>
                     <?php endif; ?>
                     <a class="button icon-only-button logout-icon" href="logout.php" title="Log out"
@@ -159,14 +160,14 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php if ($recipes): ?>
                     <div class="card-grid">
                         <?php foreach ($recipes as $recipe): ?>
-                            <?php $isFavourite = $user ? isFavourite($user['id'], $recipe['id']) : false; ?>
+                            <?php $isFavourite = $user && !$isAdminUser ? isFavourite($user['id'], $recipe['id']) : false; ?>
                             <article class="recipe-card">
                                 <a href="detail.php?id=<?php echo $recipe['id']; ?>">
                                     <div class="card-image"
                                         style="background-image:url('<?php echo htmlspecialchars($recipe['image_url'] ?: 'logo.png'); ?>');">
                                     </div>
                                 </a>
-                                <?php if ($user): ?>
+                                <?php if ($user && !$isAdminUser): ?>
                                     <button class="favourite-btn <?php echo $isFavourite ? 'favourited' : ''; ?>"
                                         onclick="toggleFavourite(<?php echo $recipe['id']; ?>, this, event)">♥</button>
                                 <?php endif; ?>
