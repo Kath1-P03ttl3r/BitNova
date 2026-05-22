@@ -4,3 +4,7 @@ Um die Website dann im Browser zu öffnen im Terminal zuerst in hberf wechseln u
 Wir können uns alle selbst einloggen (mit Email), um sich als Admin einzuloggen und mehr Rechte zu haben (Rezepte löschen, Datenbankansicht) als Benutzername BitNova und als Passwort CookingBit eingeben.
 
 in CookingBitTryNico ist der erste Versuch/Prototyp von Nico, da wir uns dann aber entschieden haben nur php zu verwenden, haben wir das ganze von neu gemacht.
+
+Salima und Kathi haben die neue Website dann orientiert an Nicos gemacht, die Commits von Kathi wo als Commitmessage SK (Salima Khamzatova) steht, hat Salima gemacht, ihr Konto hat nur nicht funktioniert.
+
+Luka hat alle Rezepte auf der Website mit den Zugangsdaten des Administrators gemacht. Da die Rezepte direkt auf der Website hinzugefügt wurden, gibt es keine Commits, er hat aber alle Rezepte recherchiert, formuliert und eingefügt. Da Luka keine Commits hat, steht er bei den Contributern nicht dabei, er hat aber ebenso einen Teil der Arbeit übernommen.
