@@ -1,24 +1,30 @@
 <?php
+// edit recipe page - I tried to explain the logic here a bit
 require_once 'db.php';
 requireLogin();
 $user = currentUser();
 $isAdminUser = isAdmin();
 
 $id = (int) ($_GET['id'] ?? 0);
+// check whether admin or owner can edit this recipe
+// admins can edit any recipe; regular users only their own
 if ($isAdminUser) {
     $stmt = $pdo->prepare('SELECT * FROM recipes WHERE id = ?');
     $stmt->execute([$id]);
 } else {
+    // include user id in the WHERE clause to enforce ownership
     $stmt = $pdo->prepare('SELECT * FROM recipes WHERE id = ? AND user_id = ?');
     $stmt->execute([$id, $user['id']]);
 }
 $recipe = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$recipe) {
+    // redirect if recipe not found or not permitted
     header('Location: ' . ($isAdminUser ? 'db_table.php' : 'my_recipes.php'));
     exit;
 }
 
+// populate form values from DB so the user sees the current data
 $error = '';
 $title = $recipe['title'];
 $description = $recipe['description'];
@@ -29,6 +35,7 @@ $duration = $recipe['duration'];
 $dietaryRestriction = $recipe['dietary_restriction'];
 $imageUrl = $recipe['image_url'];
 
+// when the form is submitted we validate and update DB
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title'] ?? '');
     $description = trim($_POST['description'] ?? '');
@@ -41,8 +48,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $imageUrl = trim($_POST['image_url'] ?? '');
 
     if ($title === '' || $description === '' || $ingredients === '' || $steps === '' || $mealType === '' || $duration === '') {
+        // basic validation before saving
+        // we require these fields to avoid empty recipes in the DB
         $error = 'Please fill in all required fields.';
     } else {
+        // perform an UPDATE using prepared statements to avoid SQL injection
+        // admin can update any recipe, normal users only their own (extra WHERE user_id = ?)
         if ($isAdminUser) {
             $stmt = $pdo->prepare('UPDATE recipes SET title = ?, description = ?, ingredients = ?, steps = ?, meal_type = ?, duration = ?, dietary_restriction = ?, image_url = ? WHERE id = ?');
             $stmt->execute([
@@ -57,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $id,
             ]);
         } else {
+            // this prevents users from editing recipes they don't own; we also pass user id to the query
             $stmt = $pdo->prepare('UPDATE recipes SET title = ?, description = ?, ingredients = ?, steps = ?, meal_type = ?, duration = ?, dietary_restriction = ?, image_url = ? WHERE id = ? AND user_id = ?');
             $stmt->execute([
                 $title,
@@ -72,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
         }
 
+        // after saving send the user back to the appropriate list view
         header('Location: ' . ($isAdminUser ? 'db_table.php' : 'my_recipes.php'));
         exit;
     }
@@ -107,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="alert"><?php echo htmlspecialchars($error); ?></div>
                 <?php endif; ?>
 
+                <!-- simple form for editing a recipe, beginner comments added -->
                 <form method="post" action="edit_recipe.php?id=<?php echo $id; ?>">
                     <label>Recipe Title</label>
                     <input type="text" name="title" value="<?php echo htmlspecialchars($title); ?>" required>

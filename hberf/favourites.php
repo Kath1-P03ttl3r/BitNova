@@ -1,20 +1,30 @@
 <?php
+// favourites page - shows recipes the user liked
+// I will add more detailed beginner-style comments here so it's clear
+// This page requires a logged-in user and shows only their favourite recipes
 require_once 'db.php';
+// ensure user is logged in before doing DB work
 requireLogin();
-$user = currentUser();
+$user = currentUser(); // small user array from session (id, username)
 
-$search = trim($_GET['search'] ?? '');
-$mealType = $_GET['meal_type'] ?? '';
+// read filter inputs from GET (these are optional)
+$search = trim($_GET['search'] ?? ''); // free text search
+$mealType = $_GET['meal_type'] ?? ''; // exact match filter
 $duration = $_GET['duration'] ?? '';
 $dietaryRestriction = $_GET['dietary_restriction'] ?? '';
+
+// we'll build WHERE clauses in $conditions and values in $params
 $conditions = [];
 $params = [];
+// if search text provided, match title, description or ingredients using LIKE
 if ($search !== '') {
     $conditions[] = '(r.title LIKE ? OR r.description LIKE ? OR r.ingredients LIKE ?)';
+    // use wildcards so partial matches work
     $params[] = "%$search%";
     $params[] = "%$search%";
     $params[] = "%$search%";
 }
+// exact match filters for meal type and duration
 if ($mealType !== '' && $mealType !== 'All') {
     $conditions[] = 'r.meal_type = ?';
     $params[] = $mealType;
@@ -23,16 +33,24 @@ if ($duration !== '' && $duration !== 'All') {
     $conditions[] = 'r.duration = ?';
     $params[] = $duration;
 }
+// dietary restriction is a simple select; in this DB it's stored as a comma-separated string
 if ($dietaryRestriction !== '') {
+    // exact equals is OK here because the UI provides values that match stored tokens
     $conditions[] = 'r.dietary_restriction = ?';
     $params[] = $dietaryRestriction;
 }
+// build final WHERE fragment; note we always filter by favourites.user_id
 $where = '';
 if ($conditions) {
+    // prepend AND because the main query already has a WHERE for favourites
     $where = 'AND ' . implode(' AND ', $conditions);
 }
+
+// prepare the main query: join recipes to users and favourites
 $stmt = $pdo->prepare("SELECT r.*, u.username FROM recipes r JOIN users u ON r.user_id = u.id JOIN favourites f ON f.recipe_id = r.id WHERE f.user_id = ? $where ORDER BY f.created_at DESC");
+// merge the user id param at the front of the params array
 $stmt->execute(array_merge([$user['id']], $params));
+// fetch all matching recipes as associative arrays
 $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
@@ -119,23 +137,32 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php if ($recipes): ?>
                     <div class="card-grid">
                         <?php foreach ($recipes as $recipe): ?>
+                            <!-- recipe card: image, meta, and actions -->
                             <article class="recipe-card">
+                                <!-- link to full recipe detail page -->
                                 <a href="detail.php?id=<?php echo $recipe['id']; ?>">
                                     <div class="card-image"
                                         style="background-image:url('<?php echo htmlspecialchars($recipe['image_url'] ?: 'logo.png'); ?>');">
                                     </div>
                                 </a>
+                                <!-- favourite button: visually marked as favourited on this page -->
+                                <!-- toggleFavourite will call `toggle_favourite.php` and update the button state -->
                                 <button class="favourite-btn favourited"
                                     onclick="toggleFavourite(<?php echo $recipe['id']; ?>, this, event)">♥</button>
                                 <div class="card-body">
+                                    <!-- recipe title and short description; escaped to prevent XSS -->
                                     <h2><?php echo htmlspecialchars($recipe['title']); ?></h2>
                                     <p><?php echo htmlspecialchars($recipe['description']); ?></p>
                                     <div class="card-meta">
+                                        <!-- meta fields: meal type and duration shown as small tags -->
                                         <span><?php echo htmlspecialchars($recipe['meal_type']); ?></span>
                                         <span><?php echo htmlspecialchars($recipe['duration']); ?></span>
-                                        <?php if ($recipe['dietary_restriction']): ?><span
-                                                class="tag"><?php echo htmlspecialchars($recipe['dietary_restriction']); ?></span><?php endif; ?>
+                                        <?php if ($recipe['dietary_restriction']): ?>
+                                            <!-- dietary restriction is stored as a short string -->
+                                            <span class="tag"><?php echo htmlspecialchars($recipe['dietary_restriction']); ?></span>
+                                        <?php endif; ?>
                                     </div>
+                                    <!-- link to see full recipe with ingredients and steps -->
                                     <a class="link-button" href="detail.php?id=<?php echo $recipe['id']; ?>">Read more</a>
                                 </div>
                             </article>

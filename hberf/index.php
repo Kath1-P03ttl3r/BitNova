@@ -1,4 +1,5 @@
 <?php
+// simple landing page, small comments added for clarity
 require_once 'db.php';
 ?>
 <!DOCTYPE html>
@@ -19,6 +20,9 @@ require_once 'db.php';
         <div></div>
     </div>
 
+    <!-- landing card with CTA buttons -->
+    <!-- Note: this is the public entry point; users can register or browse as guest -->
+    <!-- The 'Browse as Guest' link goes to the main dashboard which shows sample recipes -->
     <div class="landing-container">
         <div class="landing-card">
             <div class="landing-logo-wrap">

@@ -1,4 +1,5 @@
 <?php
+// my recipes for logged in user, added small comments for clarity
 require_once 'db.php';
 requireLogin();
 $user = currentUser();
@@ -11,11 +12,15 @@ if (isAdmin()) {
 $message = '';
 $error = '';
 
+// handle deletion requests: only allow deleting recipes owned by this user
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+    // cast to int for safety
     $deleteId = (int) ($_POST['delete_id'] ?? 0);
+    // delete only where id AND user_id match to enforce ownership
     $stmt = $pdo->prepare('DELETE FROM recipes WHERE id = ? AND user_id = ?');
     $stmt->execute([$deleteId, $user['id']]);
 
+    // rowCount > 0 means a row was deleted; otherwise user tried to delete someone else's recipe
     if ($stmt->rowCount() > 0) {
         $message = 'Recipe deleted successfully.';
     } else {
@@ -64,8 +69,11 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php endif; ?>
 
                 <?php if ($recipes): ?>
+                    <!-- show cards for each recipe created by the user -->
+                    <!-- loop over user's recipes and show cards -->
                     <div class="card-grid">
                         <?php foreach ($recipes as $recipe): ?>
+                            <!-- one card per recipe the user created; values are escaped below -->
                             <article class="recipe-card">
                                 <a href="detail.php?id=<?php echo $recipe['id']; ?>">
                                     <div class="card-image"

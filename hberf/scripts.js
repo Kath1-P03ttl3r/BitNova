@@ -1,3 +1,6 @@
+// simple client helpers, i'm not a JS expert but this works for now
+// downloadRecipePdf: builds a small PDF from the `window.recipeData` object
+// Steps: create doc, write header, ingredients, steps, then save file
 function downloadRecipePdf() {
     const data = window.recipeData;
     if (!data) {
@@ -39,6 +42,7 @@ function downloadRecipePdf() {
     doc.setFontSize(12);
     const splitSteps = doc.splitTextToSize(data.steps, maxWidth);
     doc.text(splitSteps, margin, y);
+    // filename: lowercase title with non-alphanum replaced by underscore
     doc.save(`${data.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`);
 }
 
@@ -54,13 +58,16 @@ async function toggleFavourite(recipeId, btn, event) {
         });
         const data = await response.json();
         if (data.success) {
+            // update UI based on new favourite state
             btn.classList.toggle('favourited', data.isFavourite);
             // If on favourites page and recipe was unfavourited, remove the card
             if (!data.isFavourite && window.location.href.includes('favourites.php')) {
+                // simple DOM removal to reflect change without reload
                 btn.closest('.recipe-card').remove();
             }
         }
     } catch (error) {
+        // log errors for debugging, could show a UI alert later
         console.error('Error toggling favourite:', error);
     }
 }

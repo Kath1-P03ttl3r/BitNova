@@ -1,4 +1,5 @@
 <?php
+// admin DB table view - I added comments to help me remember what each part does
 require_once 'db.php';
 $user = currentUser();
 if (!isAdmin()) {
@@ -6,6 +7,7 @@ if (!isAdmin()) {
     exit;
 }
 
+// make sure guest user exists so we can attribute created recipes
 $guestId = $pdo->query('SELECT id FROM users WHERE username = "guest"')->fetchColumn();
 if (!$guestId) {
     $stmt = $pdo->prepare('INSERT INTO users(username,email,password_hash,created_at) VALUES (?, ?, ?, ?)');
@@ -15,6 +17,7 @@ if (!$guestId) {
 
 $errors = [];
 $message = '';
+// handle form submits for delete or insert
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete_id'])) {
         $deleteId = (int) $_POST['delete_id'];
@@ -22,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$deleteId]);
         $message = 'Rezept wurde gelöscht.';
     } else {
+        // INSERT handling: collect fields and validate before inserting
         $title = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
         $ingredients = trim($_POST['ingredients'] ?? '');
@@ -37,8 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (empty($errors)) {
+            // choose author id: current user or guest fallback
             $authorId = $user['id'] ?? $guestId;
             $stmt = $pdo->prepare('INSERT INTO recipes(user_id, title, description, ingredients, steps, meal_type, duration, dietary_restriction, image_url, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+            // execute the insert with values in the same order as the placeholders
             $stmt->execute([
                 $authorId,
                 $title,
@@ -58,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN users u ON r.user_id = u.id ORDER BY id DESC')->fetchAll(PDO::FETCH_ASSOC);
 ?>
+<!-- admin table page, shows all recipes and allows edits/deletes -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -97,6 +104,7 @@ $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN use
                 <?php endif; ?>
 
                 <div class="table-responsive">
+                    <!-- admin table: each row shows recipe details; simple actions follow -->
                     <table class="db-table">
                         <thead>
                             <tr>
@@ -116,6 +124,7 @@ $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN use
                         </thead>
                         <tbody>
                             <?php foreach ($recipes as $recipe): ?>
+                                <!-- each table row is a recipe; we escape values below for safety -->
                                 <tr>
                                     <td><?php echo htmlspecialchars($recipe['id']); ?></td>
                                     <td><?php echo htmlspecialchars($recipe['author']); ?></td>
@@ -152,6 +161,7 @@ $recipes = $pdo->query('SELECT r.*, u.username AS author FROM recipes r JOIN use
 
                 <div class="db-form" style="margin-top: 32px;">
                     <h2>Add new recipe directly</h2>
+                    <!-- quick add form for admin use, kept minimal -->
                     <form method="post" action="db_table.php">
                         <label>Title</label>
                         <input type="text" name="title" required

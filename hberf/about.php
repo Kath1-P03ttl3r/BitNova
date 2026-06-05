@@ -1,4 +1,6 @@
 <?php
+// tiny about page, added comments so it's easier to follow
+// not much here, just static content and a header/footer
 require_once 'db.php';
 ?>
 <!DOCTYPE html>
@@ -20,6 +22,9 @@ require_once 'db.php';
             </div>
         </header>
 
+        <!-- main content, nothing fancy here -->
+        <!-- You can add more company info below if needed -->
+        <!-- This page is static and safe to edit without touching backend code -->
         <main class="content-form centered-form">
             <div class="form-card">
                 <h1>About us</h1>

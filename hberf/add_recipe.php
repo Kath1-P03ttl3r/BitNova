@@ -1,9 +1,14 @@
 <?php
+// add recipe page, beginner-friendly comments here
 require_once 'db.php';
+// must be logged in to add recipes
 requireLogin();
 $user = currentUser();
 $error = '';
+
+// handle form submission for adding a recipe
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // gather inputs and trim whitespace
     $title = trim($_POST['title'] ?? '');
     $description = trim($_POST['description'] ?? '');
     $ingredients = trim($_POST['ingredients'] ?? '');
@@ -11,13 +16,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mealType = $_POST['meal_type'] ?? '';
     $duration = $_POST['duration'] ?? '';
     $dietaryRestrictionArray = $_POST['dietary_restriction'] ?? [];
+    // dietary restrictions come from checkboxes; join them into a string
     $dietaryRestriction = is_array($dietaryRestrictionArray) ? implode(', ', $dietaryRestrictionArray) : '';
     $imageUrl = trim($_POST['image_url'] ?? '');
+
+    // simple required-field validation
     if ($title === '' || $description === '' || $ingredients === '' || $steps === '' || $mealType === '' || $duration === '') {
         $error = 'Please fill in all required fields.';
     } else {
+        // insert new recipe row into DB, using prepared statement to avoid SQL injection
+        // note: created_at is a simple timestamp created with PHP's date() for now
         $stmt = $pdo->prepare('INSERT INTO recipes(user_id,title,description,ingredients,steps,meal_type,duration,dietary_restriction,image_url,created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
         $stmt->execute([$user['id'], $title, $description, $ingredients, $steps, $mealType, $duration, $dietaryRestriction, $imageUrl, date('Y-m-d H:i:s')]);
+        // after saving redirect user to dashboard to see their recipe
         header('Location: dashboard.php');
         exit;
     }
@@ -49,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php if ($error): ?>
                     <div class="alert"><?php echo htmlspecialchars($error); ?></div>
                 <?php endif; ?>
+                <!-- form to add a recipe, I left hints in placeholders -->
                 <form method="post" action="add_recipe.php">
                     <label>Recipe Title</label>
                     <input type="text" name="title" value="<?php echo htmlspecialchars($title ?? ''); ?>" required>

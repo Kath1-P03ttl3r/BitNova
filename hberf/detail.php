@@ -1,25 +1,33 @@
 <?php
+// detail page for one recipe, I added some notes while reading
 require_once 'db.php';
 $user = currentUser();
 $id = intval($_GET['id'] ?? 0);
 $ratingError = '';
 $ratingSuccess = '';
 
+// handle rating submission if user posted a rating
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rating_submit'])) {
+    // only logged in users can rate; redirect otherwise
     if (!$user) {
         header('Location: login.php');
         exit;
     }
 
+    // basic validation: ensure the posted recipe id matches the page id
     $postedRecipeId = intval($_POST['recipe_id'] ?? 0);
     if ($postedRecipeId !== $id) {
+        // mismatched id - probably a tampered request
         $ratingError = 'Invalid recipe selected for rating.';
     } else {
+        // sanitize rating and ensure it's in the expected range
         $rating = intval($_POST['rating'] ?? 0);
         if ($rating < 1 || $rating > 5) {
             $ratingError = 'Please select at least 1 star.';
         } else {
+            // store the rating (insert or update). This function also timestamps the change.
             setRecipeRating($user['id'], $id, $rating);
+            // user-friendly confirmation message shown on the page
             $ratingSuccess = 'Your rating has been saved.';
         }
     }
@@ -95,14 +103,17 @@ $dietaryRestrictions = array_values(array_filter(array_map('trim', explode(',', 
                         <h2>Ingredients</h2>
                         <ul>
                             <?php foreach (explode("\n", trim($recipe['ingredients'])) as $ingredient): ?>
+                                <!-- each ingredient is on its own line in the DB, we split by newline -->
                                 <li><?php echo htmlspecialchars($ingredient); ?></li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
                     <div class="detail-section">
                         <h2>Instructions</h2>
+                        <!-- steps are stored as plain text; pre preserves formatting/numbering -->
                         <pre><?php echo htmlspecialchars($recipe['steps']); ?></pre>
                     </div>
+                    <!-- download uses client-side js to generate a PDF from the recipeData object -->
                     <button class="button orange" onclick="downloadRecipePdf(<?php echo $recipe['id']; ?>)">Download
                         PDF</button>
                     <div class="detail-section rating-section">
@@ -119,6 +130,7 @@ $dietaryRestrictions = array_values(array_filter(array_map('trim', explode(',', 
                         </p>
 
                         <?php if ($user): ?>
+                            <!-- show favourite heart only for logged in users -->
                             <?php if ($ratingSuccess): ?>
                                 <div class="alert"><?php echo htmlspecialchars($ratingSuccess); ?></div>
                             <?php endif; ?>
@@ -154,6 +166,7 @@ $dietaryRestrictions = array_values(array_filter(array_map('trim', explode(',', 
         </main>
     </div>
     <script>
+        // store recipe data in a small object so frontend can use it (PDF/download)
         window.recipeData = {
             title: <?php echo json_encode($recipe['title']); ?>,
             description: <?php echo json_encode($recipe['description']); ?>,
@@ -163,7 +176,7 @@ $dietaryRestrictions = array_values(array_filter(array_map('trim', explode(',', 
             ingredients: <?php echo json_encode(explode("\n", trim($recipe['ingredients']))); ?>,
             steps: <?php echo json_encode($recipe['steps']); ?>,
             author: <?php echo json_encode($recipe['username']); ?>
-        };
+    };
     </script>
     <footer class="site-footer">
         <a href="about.php">About us</a>

@@ -1,15 +1,22 @@
 <?php
+// register new user - I left some beginner comments for the checks
 require_once 'db.php';
 $error = '';
+// don't allow registration if already logged in
 if (!empty($_SESSION['user'])) {
     header('Location: dashboard.php');
     exit;
 }
+
+// handle registration form
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // collect and trim inputs
     $username = trim($_POST['username'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
     $confirm = $_POST['confirm'] ?? '';
+
+    // simple server-side validation, not exhaustive - good for beginners
     if ($username === '' || $email === '' || $password === '' || $confirm === '') {
         $error = 'Please fill in all fields.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -19,13 +26,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($password !== $confirm) {
         $error = 'Passwords do not match.';
     } else {
+        // check if username or email already exists
         $stmt = $pdo->prepare('SELECT COUNT(*) FROM users WHERE username = ? OR email = ?');
         $stmt->execute([$username, $email]);
         if ($stmt->fetchColumn() > 0) {
             $error = 'A user with this username or email already exists.';
         } else {
+            // create user: store hashed password, minimal session created
             $stmt = $pdo->prepare('INSERT INTO users(username,email,password_hash,created_at) VALUES (?, ?, ?, ?)');
             $stmt->execute([$username, $email, password_hash($password, PASSWORD_DEFAULT), date('Y-m-d H:i:s')]);
+            // store new user in session and redirect
             $_SESSION['user'] = ['id' => $pdo->lastInsertId(), 'username' => $username];
             header('Location: dashboard.php');
             exit;
@@ -48,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="auth-card">
             <h1>Register</h1>
             <?php if ($error): ?>
+                <!-- show registration validation errors here -->
                 <div class="alert"><?php echo htmlspecialchars($error); ?></div>
             <?php endif; ?>
             <form method="post" action="register.php">

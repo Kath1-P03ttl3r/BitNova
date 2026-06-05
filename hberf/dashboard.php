@@ -1,4 +1,5 @@
 <?php
+// dashboard - list recipes with filters, beginner notes added
 require_once 'db.php';
 $user = currentUser();
 $isAdminUser = isAdmin();
@@ -6,6 +7,7 @@ $showMyRecipesButton = false;
 if ($user && !$isAdminUser) {
     $ownedRecipeCountStmt = $pdo->prepare('SELECT COUNT(*) FROM recipes WHERE user_id = ?');
     $ownedRecipeCountStmt->execute([$user['id']]);
+    // check if the user has created recipes so we can show a quick link
     $showMyRecipesButton = ((int) $ownedRecipeCountStmt->fetchColumn()) > 0;
 }
 
@@ -16,6 +18,7 @@ $dietaryRestrictions = $_GET['dietary_restriction'] ?? [];
 if (!is_array($dietaryRestrictions)) {
     $dietaryRestrictions = [];
 }
+// build SQL WHERE parts based on filter inputs (simple approach)
 $conditions = [];
 $params = [];
 if ($search !== '') {
@@ -35,7 +38,9 @@ if ($duration !== '' && $duration !== 'All') {
 if (!empty($dietaryRestrictions)) {
     $restrictionConditions = [];
     foreach ($dietaryRestrictions as $restriction) {
+        // for each selected dietary restriction add a LIKE condition
         $restrictionConditions[] = 'r.dietary_restriction LIKE ?';
+        // we use %% around the value because dietary_restriction is a comma-separated string
         $params[] = "%$restriction%";
     }
     $conditions[] = '(' . implode(' OR ', $restrictionConditions) . ')';
@@ -46,6 +51,7 @@ if ($conditions) {
 }
 $stmt = $pdo->prepare("SELECT r.*, COALESCE(AVG(rr.rating), 0) AS average_rating, COUNT(rr.id) AS rating_count FROM recipes r LEFT JOIN recipe_ratings rr ON rr.recipe_id = r.id $where GROUP BY r.id ORDER BY r.created_at DESC");
 $stmt->execute($params);
+// execute the prepared statement with the accumulated params from filters
 $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
@@ -86,6 +92,7 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </header>
         <main class="content-grid">
             <aside class="sidebar">
+                <!-- filter form to narrow down recipes; uses GET so links are shareable -->
                 <form method="get" action="dashboard.php" class="filter-form">
                     <div class="filter-group">
                         <label>Search</label>
@@ -157,6 +164,7 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </form>
             </aside>
             <section class="recipe-board">
+                <!-- recipe listing: cards are generated from $recipes array -->
                 <?php if ($recipes): ?>
                     <div class="card-grid">
                         <?php foreach ($recipes as $recipe): ?>
