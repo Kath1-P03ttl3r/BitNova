@@ -19,6 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // simple server-side validation, not exhaustive - good for beginners
     if ($username === '' || $email === '' || $password === '' || $confirm === '') {
         $error = 'Please fill in all fields.';
+    } elseif (!preg_match('/^[a-zA-Z0-9._-]+$/', $username)) {
+        $error = 'Username can only contain letters, numbers, underscore (_), hyphen (-), and period (.).';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'Please use a valid email address.';
     } elseif (strlen($password) < 6) {

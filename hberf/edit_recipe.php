@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </header>
 
-        <main class="content-form<?php echo $isAdminUser ? ' centered-form' : ''; ?>">
+        <main class="content-form centered-form">
             <div class="form-card">
                 <h1>Edit your recipe</h1>
                 <?php if ($error): ?>
